@@ -1,6 +1,6 @@
 <?php
 
-namespace Multi_Emails_WooCommerce;
+namespace Multi_Emails_WooCommerce\Admin;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -28,15 +28,19 @@ final class Admin {
      * @since 1.0.0
      */
     public function company_list() {
+        require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/admin/multi-emails-table.php';
+
+        $multi_emails_table = new Multi_Emails_Table();
+        $multi_emails_table->prepare_items();
+
         echo '<div class="wrap multi-emails-woocommerce-wrap">';
         echo '<h1 class="wp-heading-inline">' . __('Multi Emails', 'multi-emails-woocommerce') . '</h1>';
         echo '<hr class="wp-header-end">';
 
         echo '<form method="post">';
-
-
+        $multi_emails_table->display();
         echo '</form>';
-        
+
         echo '</div>';
     }
 }
