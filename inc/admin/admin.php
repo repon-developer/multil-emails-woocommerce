@@ -2,6 +2,8 @@
 
 namespace Multi_Emails_WooCommerce\Admin;
 
+use Multi_Emails_WooCommerce\Vendor;
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -11,8 +13,70 @@ if (!defined('ABSPATH')) {
  */
 final class Admin {
 
+    /**
+     * Hold error object
+     * @var WP_Error
+     */
+    var $error = null;
+
     public function __construct() {
+        $this->error = new \WP_Error();
+
+        add_action('init', array($this, 'handle_submission_form'));
         add_action('admin_menu', array($this, 'admin_menu'), 200);
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+    }
+
+    /**
+     * Handle submission form
+     * @since 1.0.0
+     */
+    public function handle_submission_form() {
+        if (!isset($_POST['_wpnonce'])) {
+            return;
+        }
+
+        if (!wp_verify_nonce($_POST['_wpnonce'], '_nonce_multi_emails_submission_form')) {
+            return;
+        }
+
+        $post_data = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+        if (empty($post_data['company-name'])) {
+            $this->error->add('company_name', __('Please enter company name.', 'multi-emails-woocommerce'));
+        }
+
+        if (empty($post_data['product-category'])) {
+            $this->error->add('product_category', __('Please select a category from the list.', 'multi-emails-woocommerce'));
+        }
+
+        $emails = empty($post_data['emails']) || !is_array($post_data['emails']) ? [] : $post_data['emails'];
+        $emails = array_filter(array_map('sanitize_email', $emails));
+
+        if (empty($emails)) {
+            $this->error->add('email', __('Please enter at least one email.', 'multi-emails-woocommerce'));
+        }
+
+        if ($this->error->has_errors()) {
+            return;
+        }
+
+        $vendor_id = isset($post_data['vendor-id']) ? $post_data['vendor-id'] : null;
+        $vendor = Vendor::get($vendor_id);
+
+        if (is_array($post_data)) {
+            $vendor = new Vendor(array(
+                'emails' => $emails,
+                'name' => $post_data['company-name'],
+                'category' => $post_data['product-category'],
+            ));
+        }
+
+        $vendor_id = $vendor->save();
+
+
+        //exit(wp_safe_redirect(add_query_arg(array('id' => $vendor_id, 'page' => 'multi-emails-woocmmerce'))));
     }
 
     /**
@@ -24,10 +88,41 @@ final class Admin {
     }
 
     /**
+     * Enqueue scripts
+     * @since 1.0.0
+     */
+    public function enqueue_scripts() {
+        preg_match('/multi-emails-woocmmerce/', get_current_screen()->id, $matches);
+        if (sizeof($matches) == 0) {
+            return;
+        };
+
+        wp_enqueue_style('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . '/assets/css/admin.css');
+        wp_enqueue_script('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . '/assets/js/admin.js', ['jquery'], MULTI_EMAILS_WOOCOMMERCE_VERSION, true);
+    }
+
+    /**
      * Company list table
      * @since 1.0.0
      */
     public function company_list() {
+        if (isset($_GET['id'])) {
+            $vendor = Vendor::get($_GET['id']);
+
+            $post_data = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+            if (is_array($post_data)) {
+                $vendor = new Vendor(array(
+                    'name' => $post_data['company-name'],
+                    'category' => $post_data['product-category'],
+                    'emails' => isset($post_data['emails']) ? $post_data['emails'] : [],
+                ));
+            }
+
+            $error = $this->error;
+            return require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/admin/multi-emails-form.php';
+        }
+
+
         require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/admin/multi-emails-table.php';
 
         $multi_emails_table = new Multi_Emails_Table();
@@ -35,6 +130,8 @@ final class Admin {
 
         echo '<div class="wrap multi-emails-woocommerce-wrap">';
         echo '<h1 class="wp-heading-inline">' . __('Multi Emails', 'multi-emails-woocommerce') . '</h1>';
+        echo ' <a href="' . add_query_arg('id', 'new', menu_page_url('multi-emails-woocmmerce', false)) . '" class="page-title-action">' . __('Add New', 'multi-emails-woocommerce') . '</a>';
+
         echo '<hr class="wp-header-end">';
 
         echo '<form method="post">';

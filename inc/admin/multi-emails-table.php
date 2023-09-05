@@ -40,12 +40,12 @@ class Multi_Emails_Table extends \WP_List_Table {
 
         $first_item_no = ($page_number - 1) * $this->per_page;
 
-        $items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->table_multi_emails LIMIT %d, %d", $first_item_no, $this->per_page));
+        $items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->table_multi_emails_vendor LIMIT %d, %d", $first_item_no, $this->per_page));
         $this->items = array_map(function ($item) {
             return new Quote($item);
         }, $items);
 
-        $total_items = $wpdb->get_var("SELECT count(*) FROM $wpdb->table_multi_emails");
+        $total_items = $wpdb->get_var("SELECT count(*) FROM $wpdb->table_multi_emails_vendor");
 
         $this->set_pagination_args(array(
             'total_items' => $total_items,

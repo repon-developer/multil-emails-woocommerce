@@ -1,0 +1,24 @@
+ul.vendor-email-address-list-field {
+    list-style: none;
+    margin-top: 0;
+    max-width: 375px;
+}
+
+ul.vendor-email-address-list-field:empty {
+    margin: 0;
+    display: none;
+}
+
+ul.vendor-email-address-list-field > li {
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+}
+
+ul.vendor-email-address-list-field > li input {
+    flex: 1;
+}
+
+ul.vendor-email-address-list-field > li span.remove {
+    cursor: pointer;
+}
