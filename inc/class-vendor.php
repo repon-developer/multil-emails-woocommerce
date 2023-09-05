@@ -73,6 +73,8 @@ final class Vendor {
             $this->$key = $value;
         }
 
+        $this->emails = maybe_unserialize($this->emails);
+
         if (!is_array($this->emails)) {
             $this->emails = [];
         }
@@ -110,10 +112,14 @@ final class Vendor {
      * @return int on success
      */
     public function save() {
-        return 34;
         global $wpdb;
         $data = get_object_vars($this);
         unset($data['dirty_data']);
+
+        error_log(print_r($data, true));
+
+
+        $data['emails'] = maybe_serialize($this->emails);
         $wpdb->replace($wpdb->table_multi_emails_vendor, $data);
         return $wpdb->insert_id;
     }

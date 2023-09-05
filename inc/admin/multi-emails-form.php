@@ -32,7 +32,7 @@ foreach ($vendor->emails as $email) {
 
     <form method="post">
         <?php wp_nonce_field('_nonce_multi_emails_submission_form') ?>
-        <input type="hidden" name="vendor-id" value="<?php $vendor->get_id() ?>">
+        <input type="hidden" name="vendor-id" value="<?php echo $vendor->get_id() ?>">
         <table class="form-table">
             <tr>
                 <th>

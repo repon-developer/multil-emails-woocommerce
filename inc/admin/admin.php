@@ -65,18 +65,13 @@ final class Admin {
         $vendor_id = isset($post_data['vendor-id']) ? $post_data['vendor-id'] : null;
         $vendor = Vendor::get($vendor_id);
 
-        if (is_array($post_data)) {
-            $vendor = new Vendor(array(
-                'emails' => $emails,
-                'name' => $post_data['company-name'],
-                'category' => $post_data['product-category'],
-            ));
-        }
-
+        $vendor->name = $post_data['company-name'];
+        $vendor->category = $post_data['product-category'];
+        $vendor->emails = $emails;
         $vendor_id = $vendor->save();
 
 
-        //exit(wp_safe_redirect(add_query_arg(array('id' => $vendor_id, 'page' => 'multi-emails-woocmmerce'))));
+        exit(wp_safe_redirect(add_query_arg(array('id' => $vendor_id, 'page' => 'multi-emails-woocmmerce'))));
     }
 
     /**
@@ -84,7 +79,7 @@ final class Admin {
      * @since 1.0.0
      */
     public function admin_menu() {
-        add_submenu_page('woocommerce', __('Multi-Emails', 'multi-emails-woocommerce'), __('Multi-Emails', 'multi-emails-woocommerce'), 'manage_woocommerce', 'multi-emails-woocmmerce', array($this, 'company_list'), 200);
+        add_submenu_page('woocommerce', __('Multi-Emails', 'multi-emails-woocommerce'), __('Multi-Emails', 'multi-emails-woocommerce'), 'manage_woocommerce', 'multi-emails-woocommerce', array($this, 'company_list'), 200);
     }
 
     /**
@@ -130,7 +125,7 @@ final class Admin {
 
         echo '<div class="wrap multi-emails-woocommerce-wrap">';
         echo '<h1 class="wp-heading-inline">' . __('Multi Emails', 'multi-emails-woocommerce') . '</h1>';
-        echo ' <a href="' . add_query_arg('id', 'new', menu_page_url('multi-emails-woocmmerce', false)) . '" class="page-title-action">' . __('Add New', 'multi-emails-woocommerce') . '</a>';
+        echo ' <a href="' . add_query_arg('id', 'new', menu_page_url('multi-emails-woocommerce', false)) . '" class="page-title-action">' . __('Add New', 'multi-emails-woocommerce') . '</a>';
 
         echo '<hr class="wp-header-end">';
 

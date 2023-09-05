@@ -2,6 +2,7 @@
 
 namespace Multi_Emails_WooCommerce\Admin;
 
+use Multi_Emails_WooCommerce\Vendor;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -42,7 +43,7 @@ class Multi_Emails_Table extends \WP_List_Table {
 
         $items = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->table_multi_emails_vendor LIMIT %d, %d", $first_item_no, $this->per_page));
         $this->items = array_map(function ($item) {
-            return new Quote($item);
+            return new Vendor($item);
         }, $items);
 
         $total_items = $wpdb->get_var("SELECT count(*) FROM $wpdb->table_multi_emails_vendor");
@@ -73,7 +74,9 @@ class Multi_Emails_Table extends \WP_List_Table {
     function get_columns() {
         return [
             'cb' => '<input type="checkbox" />',
+            'company_name' => __('Company Name', 'multi-emails-woocommerce'),
             'category' => __('Category', 'multi-emails-woocommerce'),
+            'emails' => __('Emails', 'multi-emails-woocommerce'),
         ];
     }
 
@@ -91,7 +94,17 @@ class Multi_Emails_Table extends \WP_List_Table {
      * @since 1.0.0
      */
     function column_cb($item) {
-        return sprintf('<input type="checkbox" name="items[]" value="%d" />', $item->id);
+        return sprintf('<input type="checkbox" name="items[]" value="%d" />', $item->get_id());
+    }
+
+    /**
+     * Company Name column 
+     * @since 1.0.0
+     */
+    function column_company_name($item) {
+        $edit_url = add_query_arg('id', $item->get_id(), menu_page_url('multi-emails-woocommerce', false));
+
+        printf('<strong><a href="%s">%s</a></strong>', $edit_url, esc_html($item->name));
     }
 
     /**
@@ -99,7 +112,17 @@ class Multi_Emails_Table extends \WP_List_Table {
      * @since 1.0.0
      */
     function column_category($item) {
-        
+        $term = get_term($item->category);
+        if ($term) {
+            echo esc_html($term->name);
+        }
     }
 
+    /**
+     * Emails column 
+     * @since 1.0.0
+     */
+    function column_emails($item) {
+        echo implode(', ', $item->emails);
+    }
 }
