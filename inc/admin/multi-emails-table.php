@@ -105,6 +105,14 @@ class Multi_Emails_Table extends \WP_List_Table {
         $edit_url = add_query_arg('id', $item->get_id(), menu_page_url('multi-emails-woocommerce', false));
 
         printf('<strong><a href="%s">%s</a></strong>', $edit_url, esc_html($item->name));
+
+
+        $delete_url = add_query_arg(array('id' => $item->get_id(), '_nonce' => wp_create_nonce('_nonce_delete_multi_emails_vendor_' . $item->get_id())), menu_page_url('multi-emails-woocommerce', false));
+
+        $row_actions[] = sprintf('<a href="%s" >%s</a>', $edit_url, __('Edit', 'multi-emails-woocommerce'));
+        $row_actions[] = sprintf('<a href="%s" class="delete-vendor">%s</a>', $delete_url, __('Delete', 'multi-emails-woocommerce'));
+
+        echo '<div class="row-actions">' . implode(' | ', $row_actions) . '</div>';
     }
 
     /**

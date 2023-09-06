@@ -8,5 +8,12 @@
     $('ul.vendor-email-address-list-field').on('click', 'span.remove', function () {
         $(this).closest('li').remove();
     })
+
+    $('table.multi_emails_woocommerce_table tr a.delete-vendor').on('click', function (e) {
+        const is_confirm = confirm(multi_emails_woocommerce.i10n.vendor_delete_confirm)
+        if (!is_confirm) {
+            e.preventDefault()
+        }
+    })
 })(jQuery)
 

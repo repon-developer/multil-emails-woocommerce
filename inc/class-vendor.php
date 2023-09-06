@@ -115,12 +115,38 @@ final class Vendor {
         global $wpdb;
         $data = get_object_vars($this);
         unset($data['dirty_data']);
-
-        error_log(print_r($data, true));
-
-
         $data['emails'] = maybe_serialize($this->emails);
         $wpdb->replace($wpdb->table_multi_emails_vendor, $data);
         return $wpdb->insert_id;
+    }
+
+    /**
+     * Delete this vendor
+     * @since 1.0.0
+     */
+    public function delete() {
+        global $wpdb;
+
+        $wpdb->delete($wpdb->table_multi_emails_vendor, array(
+            'id' => $this->id
+        ));
+    }
+
+    /**
+     * check if vendor has emails
+     * @since 1.0.0
+     * @return boolean
+     */
+    public function has_email() {
+        return sizeof($this->emails) > 0;
+    }
+
+    /**
+     * Get email of vendor
+     * @since 1.0.0
+     * @return array
+     */
+    public function get_emails() {
+        return $this->emails;
     }
 }

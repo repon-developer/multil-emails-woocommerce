@@ -23,6 +23,7 @@ final class Admin {
         $this->error = new \WP_Error();
 
         add_action('init', array($this, 'handle_submission_form'));
+        add_action('init', array($this, 'handle_delete_vendor'));
         add_action('admin_menu', array($this, 'admin_menu'), 200);
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
     }
@@ -71,7 +72,30 @@ final class Admin {
         $vendor_id = $vendor->save();
 
 
-        exit(wp_safe_redirect(add_query_arg(array('id' => $vendor_id, 'page' => 'multi-emails-woocmmerce'))));
+        exit(wp_safe_redirect(add_query_arg(array('id' => $vendor_id, 'page' => 'multi-emails-woocommerce'))));
+    }
+
+    /**
+     * Delete vendor
+     * @since 1.0.0
+     */
+    public function handle_delete_vendor() {
+        if (!isset($_GET['id'], $_GET['_nonce'])) {
+            return;
+        }
+
+        if (!wp_verify_nonce($_GET['_nonce'], '_nonce_delete_multi_emails_vendor_' . $_GET['id'])) {
+            return;
+        }
+
+        $vendor = Vendor::get($_GET['id']);
+        if (!$vendor->exists()) {
+            wp_die(__('Invalid vendor', 'multi-emails-woocommerce'));
+        }
+
+        $vendor->delete();
+
+        exit(wp_safe_redirect(remove_query_arg(array('id', '_nonce'))));
     }
 
     /**
@@ -87,13 +111,19 @@ final class Admin {
      * @since 1.0.0
      */
     public function enqueue_scripts() {
-        preg_match('/multi-emails-woocmmerce/', get_current_screen()->id, $matches);
+        preg_match('/multi-emails-woocommerce/', get_current_screen()->id, $matches);
         if (sizeof($matches) == 0) {
             return;
         };
 
         wp_enqueue_style('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . '/assets/css/admin.css');
         wp_enqueue_script('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . '/assets/js/admin.js', ['jquery'], MULTI_EMAILS_WOOCOMMERCE_VERSION, true);
+        wp_localize_script('multi-emails-woocommerce', 'multi_emails_woocommerce', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'i10n' => array(
+                'vendor_delete_confirm' => __('Do you want to delete this item?', 'multi-emails-woocommerce')
+            )
+        ));
     }
 
     /**
