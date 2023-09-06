@@ -1,5 +1,7 @@
 <?php
 
+namespace Multi_Emails_WooCommerce;
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -8,6 +10,25 @@ if (!defined('ABSPATH')) {
  * Core class
  */
 final class Core {
+
+    /**
+     * Hold the current instance
+     * @var Main
+     */
+    private static $instance = null;
+
+    /**
+     * Get the instance of plugin
+     * @since 1.0.0
+     * @return Main
+     */
+    public static function get_instance() {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
     public function __construct() {
         global $wpdb;
@@ -47,4 +68,4 @@ final class Core {
     }
 }
 
-new Core();
+Core::get_instance();

@@ -23,7 +23,7 @@ final class Main {
      * @return Main
      */
     public static function get_instance() {
-        if ( is_null(self::$instance) ) {
+        if (is_null(self::$instance)) {
             self::$instance = new self();
         }
 
@@ -63,23 +63,7 @@ final class Main {
             require_once  MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/admin/admin.php';
         }
 
-        add_filter('woocommerce_email_classes', array($this, 'register_email_classes'));
-        add_action('woocommerce_checkout_order_processed', array($this, 'handle_checkout_order_processed'), 10, 3);
-
-        add_action('initd', function () {
-            $order = wc_get_order(62);
-            $this->handle_checkout_order_processed(62, [], $order);
-        });
-    }
-
-    /**
-     * Register email classess
-     * @since 1.0.0
-     */
-    public function register_email_classes($email_classes) {
-        require_once MULTI_EMAILS_WOOCOMMERCE_PATH . 'inc/emails/new-order.php';
-        $email_classes['multi-emails-woocommerce-new-order'] = new Emails\New_Order();
-        return $email_classes;
+        add_action('woocommerce_checkout_order_processed', array($this, 'order_send_email'), 10, 3);
     }
 
     /**
@@ -114,11 +98,15 @@ final class Main {
         echo '</div>';
     }
 
+    public function update_recipient($recipient) {
+        return $this->recipient;
+    }
+
     /**
-     * Handle after creating an order
+     * Send email after order
      * @since 1.0.0
      */
-    public function handle_checkout_order_processed($order_id, $posted_data, $order) {
+    public function order_send_email($order_id, $posted_data, $order) {
         $order_temrs = [];
 
         foreach ($order->get_items() as $item) {
@@ -141,6 +129,8 @@ final class Main {
             $item = new Vendor($item);
         });
 
+        add_filter('woocommerce_new_order_email_allows_resend', '__return_true');
+
         $wc_emails = WC()->mailer()->get_emails();
         foreach ($vendors as $vendor) {
             if (!$vendor->has_email()) {
@@ -149,9 +139,16 @@ final class Main {
 
             $vendor_emails = $vendor->get_emails();
             foreach ($vendor_emails as $email) {
-                $wc_emails['multi-emails-woocommerce-new-order']->trigger($email, $vendor);
+                $this->recipient = $email;
+                add_filter('woocommerce_email_recipient_new_order', array($this, 'update_recipient'));
+                WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->get_id(), $order, true);
+                remove_filter('woocommerce_email_recipient_new_order', array($this, 'update_recipient'));
             }
         }
+
+        remove_filter('woocommerce_new_order_email_allows_resend', '__return_true');
+
+        delete_post_meta($order_id, '_new_order_email_sent');
     }
 }
 
