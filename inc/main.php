@@ -64,39 +64,9 @@ final class Main {
         }
 
         add_action('woocommerce_checkout_order_processed', array($this, 'order_send_email'), 10, 3);
+        add_filter('woocommerce_billing_fields', array($this, 'add_checkout_fields'));
     }
 
-    /**
-     * Add company field under shipping class field
-     * @since 1.0.0
-     */
-    public function add_company_field() {
-        global $wpdb;
-
-        $vendors = $wpdb->get_results("SELECT * FROM $wpdb->table_multi_emails_vendor");
-
-        $options = array(
-            '' => __('Select Company', 'multi-emails-woocommerce')
-        );
-
-        foreach ($vendors as $vendor) {
-            $options[$vendor->id] = $vendor->name;
-        }
-
-        $product_vendor = get_post_meta(get_the_ID(), 'product_vendor', true);
-
-        echo '<div class="options_group">';
-        woocommerce_wp_select(
-            array(
-                'id'          => 'product_vendor',
-                'value'       => $product_vendor,
-                'label'       => __('Company', 'multi-emails-woocommerce'),
-                'options'     => $options,
-            )
-        );
-
-        echo '</div>';
-    }
 
     public function update_recipient($recipient) {
         return $this->recipient;
@@ -107,48 +77,80 @@ final class Main {
      * @since 1.0.0
      */
     public function order_send_email($order_id, $posted_data, $order) {
-        $order_temrs = [];
+        $email_recipients = get_option('multi-emails-woocommerce-recipients');
+        $email_recipients = array_map(function ($recipient_item) {
+            return Utils::sanitize_recipient($recipient_item);
+        }, $email_recipients);
+
+        $email_recipients = array_filter($email_recipients, function ($item) {
+            return !empty($item['emails']);
+        });
+
+
+        $order_recipient_emails = [];
 
         foreach ($order->get_items() as $item) {
             $product_id = $item->get_product_id();
             $terms = get_the_terms($product_id, 'product_cat');
-            if ($terms === false) {
-                continue;
+
+            $term_ids = [];
+            if ($terms) {
+                $term_ids = wp_list_pluck($terms, 'term_id');
             }
 
-            foreach ($terms as $term) {
-                $order_temrs[] = $term->term_id;
+            foreach ($email_recipients as $recipient_item) {
+                $matched_items = array_intersect($term_ids, $recipient_item['categories']);
+                if (sizeof($matched_items) > 0 || in_array($product_id, $recipient_item['products'])) {
+                    $order_recipient_emails[] = $recipient_item['emails'];
+                }
             }
         }
 
-        $order_temrs = array_unique($order_temrs);
-
-        global $wpdb;
-        $vendors = $wpdb->get_results(sprintf("SELECT * FROM $wpdb->table_multi_emails_vendor WHERE category IN(%s);", implode(',', $order_temrs)));
-        array_walk($vendors, function (&$item) {
-            $item = new Vendor($item);
-        });
+        $order_recipient_emails = array_unique($order_recipient_emails);
 
         add_filter('woocommerce_new_order_email_allows_resend', '__return_true');
 
         $wc_emails = WC()->mailer()->get_emails();
-        foreach ($vendors as $vendor) {
-            if (!$vendor->has_email()) {
-                continue;
-            }
 
-            $vendor_emails = $vendor->get_emails();
-            foreach ($vendor_emails as $email) {
-                $this->recipient = $email;
-                add_filter('woocommerce_email_recipient_new_order', array($this, 'update_recipient'));
-                WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->get_id(), $order, true);
-                remove_filter('woocommerce_email_recipient_new_order', array($this, 'update_recipient'));
-            }
+
+        foreach ($order_recipient_emails as $emails) {
+            $this->recipient = $emails;
+            add_filter('woocommerce_email_recipient_new_order', array($this, 'update_recipient'));
+            WC()->mailer()->emails['WC_Email_New_Order']->trigger($order->get_id(), $order, true);
+            remove_filter('woocommerce_email_recipient_new_order', array($this, 'update_recipient'));
         }
 
         remove_filter('woocommerce_new_order_email_allows_resend', '__return_true');
 
         delete_post_meta($order_id, '_new_order_email_sent');
+    }
+
+    public function add_checkout_fields($fields) {
+        $customer_emails = get_option('multi-emails-woocommerce-customer-emails');
+        if (!is_array($customer_emails) || empty($customer_emails)) {
+            return $fields;
+        }
+
+        $billing_email_priority = $fields['billing_email']['priority'];
+
+        $start = 1;
+
+        foreach ($customer_emails as $key => $email_label) {
+            $start++;
+
+            $filed_name = Utils::customer_email_name($start);
+
+            $fields[$filed_name] = array(
+                'label'        => $email_label,
+                'required'     => false,
+                'class'        => ['form-row-wide'],
+                'validate'     => ['email'],
+                'type'         => 'email',
+                'priority'     => $billing_email_priority + $start,
+            );
+        }
+
+        return $fields;
     }
 }
 

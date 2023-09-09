@@ -44,7 +44,7 @@ add_action('before_woocommerce_init', function () {
     }
 });
 
-require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/core.php';
+require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/utils.php';
 
 /**
  * Startup woocommerce request
