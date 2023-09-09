@@ -1,0 +1,50 @@
+The client approved the new "Multi-Emails for WooCommerce" plugin project. Please read my comments carefully, most all directions are provided.
+
+
+
+The plugin is to serve two purposes. (1) To allow any single product or category of products to be sent to a predefined email and (2) to allow more than one email to be entered by a customer or user. Number one is 
+the primary purpose. There needs to be the ability to turn one on, or both, where some users might want one or the other, or both.
+
+
+
+I have provided the plugin woocommerce-multiple-email-recipients-1.2.5 which provides basically all the functions needed. Any definitive code needs to be cleaned up so as not to trace back to the original plugin. The developer used composer with its dependencies, we don't want that weighing down the plugin. Also, the licensing function needs to be removed, we don't want a crippled plugin.
+
+
+
+Here are the different screens and locations for the attached plugin: https://barn2.com/wordpress-plugins/woocommerce-multiple-email-recipients/#screenshots
+
+
+
+It would be best to move the plugin settings currently found under the Woocommerce Tabs to a new plugin setting page. We don't want to plagiarize the plugin's design. They have settings under the WooCommerce settings tabs, we should place them within the plugin's separate settings page like my other plugins.
+
+
+
+However these settings: https://barn2.com/wp-content/uploads/edd/2021/11/WooCommerce-order-email-multiple-addresses-plugin.jpg appear to have to combine with the Woocommerce layout. All the "Email notifications" found under the WooCommerce "Emails" tab need to be managed with the same unique settings. So if you click "Manage" in any of the editable WooCommerce emails, all these new settings are present.
+
+
+
+Access to the plugin's settings needs to be accessed from under the left WooCommerce menu with the short title "Multi-Emails". Access also should be provided from where the plugin is activated, the settings link.
+
+
+
+As mentioned previously, I would want to use my current plugin's formatting and CSS for the overall look. You could look at any of my current plugins and use the same tooltip graphics and scripts. It appears the 1.2.5 plugin has the same tooltip and script functions.
+
+
+
+I would want to include the 30-day nag bar found in each of my plugins for leaving plugin feedback (see Leave-Feedback-Nag-Bar.jpg graphic from Hide Cart functions as an example). After a new install, in 30 days the bar pops up coaxing a review. If the user clicks the URL link to the plugin "Leave Feedback", the nag bar ceases. If a user clicks the "X" to close it without doing anything, it reappears again in 30 days. This is how all my plugins SHOULD be working. I am not sure the nag bars work correctly on all my plugins.
+
+
+
+Also, include the "Donation for Homeless" link in the plugin descriptions like all my other plugins. Once any of my plugins are activated, the "Donation for Homeless" appears. (see sample graphic attached)
+
+
+
+The plugin description might read, "Add to WooCommerce the ability to send orders to specified vendor emails using product ID or category. Optionally, allow registered users or customers to add multiple emails in their profile." A good plugin name is "Multi-Emails for WooCommerce".
+
+
+
+Make sure it is HPOS compliant! Once approved, the URL on WordPress should be: https://wordpress.org/plugins/multi-emails-for-woocommerce/
+
+
+
+If this proves too hard for you to interpret my detailed outline, I could go ahead and buy a license for the attached plugin but prefer my own plugin that can be developed better. Thanks, Repon.
