@@ -60,10 +60,24 @@ final class Main {
 
         $this->add_email_form_fields();
 
+        add_filter('plugin_action_links', array($this, 'add_plugin_link'), 10, 2);
         add_action('woocommerce_checkout_order_processed', array($this, 'order_send_email'), 10, 3);
         add_action('woocommerce_new_order', array($this, 'save_additional_emails'), 10, 2);
         add_filter('woocommerce_billing_fields', array($this, 'add_checkout_fields'));
         add_filter('woocommerce_mail_callback_params', array($this, 'add_additional_emails'), 100, 2);
+    }
+
+    /**
+     * Add settings link at plugin action links
+     * @since 1.0.0
+     * @return array
+     */
+    public function add_plugin_link($plugin_actions, $plugin_file) {
+        if (MULTI_EMAILS_WOOCOMMERCE_BASENAME == $plugin_file) {
+            array_unshift($plugin_actions, sprintf('<a href="%s">%s</a>', menu_page_url('multi-emails-woocommerce', false), __('Settings', 'multi-emails-woocommerce')));
+        }
+
+        return $plugin_actions;
     }
 
     /**
@@ -72,11 +86,10 @@ final class Main {
      */
     public function add_email_form_fields() {
         $wc_emails = \WC_Emails::instance();
-        $emails    = $wc_emails->get_emails();
-
-
+        
         $customer_emails = [];
-
+        
+        $emails    = $wc_emails->get_emails();
         foreach ($emails as $email_id => $wc_email) {
             if (!$wc_email->is_customer_email()) {
                 continue;
