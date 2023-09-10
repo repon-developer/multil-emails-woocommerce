@@ -33,7 +33,37 @@ class Utils {
         return $item;
     }
 
-    public static function customer_email_name($number) {
+    /**
+     * Get addtional email key
+     * @since 1.0.0
+     * @return string
+     */
+    public static function get_additional_email_key($number) {
         return 'billing_email_' . $number;
     }
+
+    /** 
+     * Get additional email fields
+     * @since 1.0.0
+     * @return array
+     */
+    public static function get_additional_email_fields() {
+        $customer_emails = get_option('multi-emails-woocommerce-customer-emails');
+        if (!is_array($customer_emails) || empty($customer_emails)) {
+            $customer_emails = [];
+        }
+
+        $addtional_emails = [];
+
+        $start = 0;
+        foreach ($customer_emails as $field_label) {
+            $start++;
+            $key = self::get_additional_email_key($start);
+            $addtional_emails[$key] = $field_label;
+        }
+
+        return $addtional_emails;
+    }
+
+    
 }

@@ -32,26 +32,21 @@ final class Main {
 
     /**
      * Throw error on object clone
-     *
      * The whole idea of the singleton design pattern is that there is a single
      * object therefore, we don't want the object to be cloned.
-     *
      * @since 1.0
      * @return void
      */
     public function __clone() {
-        // Cloning instances of the class is forbidden
         _doing_it_wrong(__FUNCTION__, esc_html__('Cheating huh?', 'multi-emails-woocommerce'), '1.0.0');
     }
 
     /**
      * Disable unserializing of the class
-     *
      * @since 1.0
      * @return void
      */
     public function __wakeup() {
-        // Unserializing instances of the class is forbidden
         _doing_it_wrong(__FUNCTION__, esc_html__('Cheating huh?', 'multi-emails-woocommerce'), '1.0.0');
     }
 
@@ -64,7 +59,9 @@ final class Main {
         }
 
         add_action('woocommerce_checkout_order_processed', array($this, 'order_send_email'), 10, 3);
+        add_action('woocommerce_new_order', array($this, 'save_additional_emails'), 10, 2);
         add_filter('woocommerce_billing_fields', array($this, 'add_checkout_fields'));
+        add_filter('woocommerce_mail_callback_params', array($this, 'add_additional_emails'), 10, 2);
     }
 
 
@@ -125,22 +122,20 @@ final class Main {
         delete_post_meta($order_id, '_new_order_email_sent');
     }
 
+    /**
+     * Add addtional email field at checkout form
+     * @since 1.0.0
+     * @return array
+     */
     public function add_checkout_fields($fields) {
-        $customer_emails = get_option('multi-emails-woocommerce-customer-emails');
-        if (!is_array($customer_emails) || empty($customer_emails)) {
-            return $fields;
-        }
-
         $billing_email_priority = $fields['billing_email']['priority'];
 
-        $start = 1;
+        $start = 0;
 
-        foreach ($customer_emails as $key => $email_label) {
+        $additional_email_fields = Utils::get_additional_email_fields();
+        foreach ($additional_email_fields as $field_key => $email_label) {
             $start++;
-
-            $filed_name = Utils::customer_email_name($start);
-
-            $fields[$filed_name] = array(
+            $fields[$field_key] = array(
                 'label'        => $email_label,
                 'required'     => false,
                 'class'        => ['form-row-wide'],
@@ -151,6 +146,56 @@ final class Main {
         }
 
         return $fields;
+    }
+
+    /**
+     * Save additional email at order
+     * @since 1.0.0
+     */
+    public function save_additional_emails($order_id, $order) {
+        $user_id     = $order->get_customer_id();
+
+        $additional_email_keys = array_keys(Utils::get_additional_email_fields());
+
+        foreach ($additional_email_keys as $field_key) {
+            $email = !empty($_POST[$field_key]) ? sanitize_email($_POST[$field_key]) : false;
+            if (!is_email($email)) {
+                continue;
+            }
+
+            if ($user_id && is_checkout()) {
+                update_user_meta($user_id, $field_key, $email);
+            }
+
+            update_post_meta($order_id, $field_key, $email);
+        }
+    }
+
+    /**
+     * Add addtional recipients
+     * @since 1.0.0
+     * @return array
+     */
+    public function add_additional_emails($params, \WC_Email $email) {
+        if (!$email->is_customer_email()) {
+            return $params;
+        }
+
+        $order = $email->object;
+        if (!is_a($order, 'WC_Order')) {
+            return $params;
+        }
+
+        $additional_recipients = array_map(function ($key) use ($order) {
+            return sanitize_email(get_post_meta($order->get_id(), $key, true));
+        }, array_keys(Utils::get_additional_email_fields()));
+
+        $additional_recipients = array_unique(array_filter($additional_recipients));
+
+        array_unshift($additional_recipients, $params[0]);
+
+        $params[0] = implode(',', $additional_recipients);
+        return $params;
     }
 }
 
