@@ -109,7 +109,7 @@ final class Main {
         }
 
         $new_options['additional_recipients_enabled'] = array(
-            'title'   => 'Additional recipients',
+            'title'   => __('Additional recipients', 'multi-emails-woocommerce'),
             'type'    => 'checkbox',
             'default' => 'yes',
             'label'   => __('Enable this notification for additional customer email addresses', 'multi-emails-woocommerce'),
@@ -233,6 +233,7 @@ final class Main {
      * @return array
      */
     public function add_additional_emails($params, \WC_Email $email) {
+        error_log(print_r($params, true));
         if (!$email->is_customer_email() || $email->get_option('additional_recipients_enabled') !== 'yes') {
             return $params;
         }
