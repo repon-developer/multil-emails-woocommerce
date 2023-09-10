@@ -58,10 +58,66 @@ final class Main {
             require_once  MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/admin/admin.php';
         }
 
+        $this->add_email_form_fields();
+
         add_action('woocommerce_checkout_order_processed', array($this, 'order_send_email'), 10, 3);
         add_action('woocommerce_new_order', array($this, 'save_additional_emails'), 10, 2);
         add_filter('woocommerce_billing_fields', array($this, 'add_checkout_fields'));
-        add_filter('woocommerce_mail_callback_params', array($this, 'add_additional_emails'), 10, 2);
+        add_filter('woocommerce_mail_callback_params', array($this, 'add_additional_emails'), 100, 2);
+    }
+
+    /**
+     * Add filter to all customer email
+     * @since 1.0.0
+     */
+    public function add_email_form_fields() {
+        $wc_emails = \WC_Emails::instance();
+        $emails    = $wc_emails->get_emails();
+
+
+        $customer_emails = [];
+
+        foreach ($emails as $email_id => $wc_email) {
+            if (!$wc_email->is_customer_email()) {
+                continue;
+            }
+
+            $customer_emails[strtolower($email_id)] = $wc_email;
+        }
+
+        foreach ($customer_emails as $email) {
+            add_filter('woocommerce_settings_api_form_fields_' . $email->id, array($this, 'add_form_settings_field'), 20);
+        }
+    }
+
+    /**
+     * Add settings field for addtional email recipient
+     * @since 1.0.0
+     * @return array
+     */
+    public function add_form_settings_field($form_fields) {
+        $form_field_enable = false;
+        if (isset($form_fields['enabled'])) {
+            $form_field_enable = $form_fields['enabled'];
+            unset($form_fields['enabled']);
+        }
+
+        $new_options = [];
+
+        if ($form_field_enable) {
+            $new_options['enabled'] = $form_field_enable;
+        }
+
+        $new_options['additional_recipients_enabled'] = array(
+            'title'   => 'Additional recipients',
+            'type'    => 'checkbox',
+            'default' => 'yes',
+            'label'   => __('Enable this notification for additional customer email addresses', 'multi-emails-woocommerce'),
+        );
+
+        $form_fields = $new_options + $form_fields;
+
+        return $form_fields;
     }
 
 
@@ -172,12 +228,12 @@ final class Main {
     }
 
     /**
-     * Add addtional recipients
+     * Add additional recipients
      * @since 1.0.0
      * @return array
      */
     public function add_additional_emails($params, \WC_Email $email) {
-        if (!$email->is_customer_email()) {
+        if (!$email->is_customer_email() || $email->get_option('additional_recipients_enabled') !== 'yes') {
             return $params;
         }
 
@@ -190,11 +246,10 @@ final class Main {
             return sanitize_email(get_post_meta($order->get_id(), $key, true));
         }, array_keys(Utils::get_additional_email_fields()));
 
-        $additional_recipients = array_unique(array_filter($additional_recipients));
-
+        $additional_recipients = array_unique(array_filter($additional_recipients, 'is_email'));
         array_unshift($additional_recipients, $params[0]);
-
         $params[0] = implode(',', $additional_recipients);
+
         return $params;
     }
 }

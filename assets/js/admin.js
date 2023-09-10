@@ -13,8 +13,6 @@
 
         const total_recipients = $(this).closest('td').find('.woocommerce-multi-emails-fieldset').data('no') || 0;
 
-        console.log(total_recipients);
-
         const add_recipient_template = wp.template('woocommerce-multi-emails-recipient');
 
         const recipient = $(add_recipient_template({ index_no: total_recipients + 1 })).insertBefore($(this))
@@ -26,6 +24,14 @@
         recipient.find('.multi-emails-woocommerce-search-product').select2({
             placeholder: multi_emails_woocommerce.i10n.search_product
         })
+    })
+
+    $('body').on('click', '.woocommerce-multi-emails-fieldset .remove-recipient', function (e) {
+        e.preventDefault();
+        const response = confirm(multi_emails_woocommerce.i10n.delete_recipient_item)
+        if (response) {
+            $(this).closest('.woocommerce-multi-emails-fieldset').remove();
+        }
     })
 
     $('#multi-emails-woocommerce-add-customer-email').on('click', function (e) {

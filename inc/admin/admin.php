@@ -87,7 +87,7 @@ final class Admin {
                 'customer_remove_email_notice' => __('Do you want to remove this field?', 'multi-emails-woocommerce'),
                 'search_category' => __('Search category', 'multi-emails-woocommerce'),
                 'search_product' => __('Search product', 'multi-emails-woocommerce'),
-                'vendor_delete_confirm' => __('Do you want to delete this item?', 'multi-emails-woocommerce')
+                'delete_recipient_item' => __('Do you want to delete this recipient?', 'multi-emails-woocommerce')
             )
         ));
     }
