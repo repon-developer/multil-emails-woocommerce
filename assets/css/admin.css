@@ -15,13 +15,17 @@
 
 .woocommerce-multi-emails-fieldset .remove-recipient {
     position: absolute;
-    right: -30px;
+    right: -27px;
     top: 3px;
     cursor: pointer;
 }
 
 .woocommerce-multi-emails-fieldset .remove-recipient:hover {
     color: #2271b1;
+}
+
+.woocommerce-multi-emails-fieldset+button {
+    margin-top: -10px!important
 }
 
 .multi-emails-woocommerce-tooltip {
@@ -102,7 +106,44 @@
 
 #multi-emails-woocommerce-customer-emails .remove-email {
     position: absolute;
-    right: -25px;
+    right: -27px;
     top: 5px;
     cursor: pointer;
+}
+
+.select2-container.select2-container--focus .select2-selection--single,
+.select2-container.select2-container--open .select2-selection--multiple,
+.select2-container.select2-container--open .select2-selection--single {
+    border-color: #007cba;
+    box-shadow: 0 0 0 1px #007cba;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    padding-inline: 8px;
+}
+
+
+.select2-dropdown {
+    border-color: #007cba
+}
+
+.select2-dropdown::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #fff;
+    content: ""
+}
+
+.select2-dropdown--below {
+    box-shadow: 0 0 0 1px #007cba, 0 2px 1px rgba(0, 0, 0, .1);
+}
+
+.select2-dropdown--below::after {
+    top: -1px
+}
+
+.select2-dropdown--above {
+    box-shadow: 0 0 0 1px #007cba, 0 -2px 1px rgba(0, 0, 0, .1)
 }

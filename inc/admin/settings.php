@@ -83,7 +83,7 @@ $customer_emails_items = array_map(function ($item) {
 
                 <span class="multi-emails-woocommerce-tooltip">
                     <span class="dashicons dashicons-editor-help"></span>
-                    <span class="tooltiptext"><?php _e('Choose how many customer email addresses to allow for each user. This number should include the email address field that is provided by WooCommerce itself, plus any additional email address fields that you wish to add.', 'multi-emails-woocommerce') ?></span>
+                    <span class="tooltiptext"><?php _e('Add additional email addresses for customer.', 'multi-emails-woocommerce') ?></span>
                 </span>
             </th>
 
