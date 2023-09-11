@@ -34,6 +34,23 @@ class Utils {
     }
 
     /**
+     * Get multi recipient
+     * @return array
+     */
+    public static function get_multi_recipient_settings() {
+        $email_recipients = get_option('multi-emails-woocommerce-recipients');
+        if (!is_array($email_recipients)) {
+            $email_recipients = [];
+        }
+
+        $email_recipients = array_map(function ($recipient_item) {
+            return Utils::sanitize_recipient($recipient_item);
+        }, $email_recipients);
+
+        return $email_recipients;
+    }
+
+    /**
      * Get addtional email key
      * @since 1.0.0
      * @return string
@@ -64,6 +81,4 @@ class Utils {
 
         return $addtional_emails;
     }
-
-    
 }

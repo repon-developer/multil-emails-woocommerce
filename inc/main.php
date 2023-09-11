@@ -143,10 +143,7 @@ final class Main {
      * @since 1.0.0
      */
     public function order_send_email($order_id, $posted_data, $order) {
-        $email_recipients = get_option('multi-emails-woocommerce-recipients');
-        $email_recipients = array_map(function ($recipient_item) {
-            return Utils::sanitize_recipient($recipient_item);
-        }, $email_recipients);
+        $email_recipients = Utils::get_multi_recipient_settings();
 
         $email_recipients = array_filter($email_recipients, function ($item) {
             return !empty($item['emails']);
@@ -246,7 +243,6 @@ final class Main {
      * @return array
      */
     public function add_additional_emails($params, \WC_Email $email) {
-        error_log(print_r($params, true));
         if (!$email->is_customer_email() || $email->get_option('additional_recipients_enabled') !== 'yes') {
             return $params;
         }
@@ -263,7 +259,6 @@ final class Main {
         $additional_recipients = array_unique(array_filter($additional_recipients, 'is_email'));
         array_unshift($additional_recipients, $params[0]);
         $params[0] = implode(',', $additional_recipients);
-
         return $params;
     }
 }

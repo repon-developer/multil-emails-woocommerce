@@ -2,11 +2,10 @@
 
 use Multi_Emails_WooCommerce\Utils;
 
-$email_recipients = get_option('multi-emails-woocommerce-recipients');
+$email_recipients = Utils::get_multi_recipient_settings();
 if (isset($_POST['email-recipients'])) {
     $email_recipients = $_POST['email-recipients'];
 }
-
 
 $email_recipients = array_map(function ($recipient_item) {
     return Utils::sanitize_recipient($recipient_item);
@@ -89,7 +88,7 @@ $customer_emails_items = array_map(function ($item) {
             </th>
 
             <td>
-                <ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items)?></ul>
+                <ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items) ?></ul>
                 <a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php _e('Add email address', 'multi-emails-woocommerce') ?></a>
             </td>
         </tr>
