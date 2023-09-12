@@ -81,4 +81,19 @@ class Utils {
 
         return $addtional_emails;
     }
+
+    /**
+     * Get additional email page settings
+     * @since 1.0.0
+     * @return array
+     */
+
+    public static function get_additional_email_pages() {
+        $additional_email_pages = get_option('multi_email_woocommerce_additional_email_pages', ['account', 'checkout']);
+        if (!is_array($additional_email_pages)) {
+            $additional_email_pages = [];
+        }
+
+        return $additional_email_pages;
+    }
 }

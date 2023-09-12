@@ -26,77 +26,134 @@ $customer_emails_items = array_map(function ($item) {
         __('Field title', 'multi-emails-woocommerce'),
         esc_attr($item)
     );
-}, $customer_emails); ?>
+}, $customer_emails);
 
-<form method="post">
 
-    <?php wp_nonce_field('_nonce_multi_emails_woocommerce_settings') ?>
+$enable_addtional_email_notifications = get_option('enable_addtional_email_notifications', 'yes');
 
-    <table class="form-table">
-        <tr>
-            <th>
-                <label><?php _e('Company Recipient(s)', 'woocommerce-multi-emails') ?></label>
-            </th>
-            <td>
+$additional_email_pages = Utils::get_additional_email_pages(); ?>
 
-                <?php
+<div id="poststuff">
 
-                foreach ($email_recipients as $index_no => $recipient_item) {
-                    $item_no = $index_no + 1;
+    <form method="post">
+        <div class="postbox">
 
-                    printf('<fieldset class="woocommerce-multi-emails-fieldset" data-no="%d">', $item_no);
-                    echo '<span class="dashicons dashicons-remove remove-recipient"></span>';
+            <div class="postbox-header">
+                <h2 class="hndle ui-sortable-handle"><?php _e('Multiple email settings', 'multi-emails-woocommerce') ?> </h2>
+            </div>
 
-                    printf(
-                        '<div class="field-row"><input placeholder="%s" name="email-recipients[%d][emails]" type="email" value="%s"></div>',
-                        __('Email address(es)', 'multi-emails-woocommerce'),
-                        $item_no,
-                        esc_attr($recipient_item['emails'])
-                    );
+            <div class="inside">
 
-                    echo '<div class="field-row">';
-                    printf('<select class="multil-emails-woocommerce-recipient-categoires" name="email-recipients[%s][categories][]" multiple>', $item_no);
-                    echo $this->get_categories($recipient_item['categories']);
-                    echo '</select>';
-                    echo '</div>';
+                <?php wp_nonce_field('_nonce_multi_emails_woocommerce_settings') ?>
 
-                    echo '<div class="field-row">';
-                    printf('<select class="multi-emails-woocommerce-search-product" name="email-recipients[%d][products][]" multiple>', $item_no);
-                    echo $this->get_products($recipient_item['products']);
-                    echo '</select>';
-                    echo '</div>';
+                <table class="form-table">
+                    <tr>
+                        <th>
+                            <label><?php _e('Company Recipient(s)', 'multi-emails-woocommerce') ?></label>
+                        </th>
+                        <td>
 
-                    echo '</fieldset>';
-                }
+                            <?php
 
-                ?>
+                            foreach ($email_recipients as $index_no => $recipient_item) {
+                                $item_no = $index_no + 1;
 
-                <button class="button" id="woocommerce-multi-emails-add-recipient"><?php _e('Add Recipient', 'multi-emails-woocommerce') ?></button>
-            </td>
-        </tr>
+                                printf('<fieldset class="woocommerce-multi-emails-fieldset" data-no="%d">', $item_no);
+                                echo '<span class="dashicons dashicons-remove remove-recipient"></span>';
 
-        <tr>
-            <th>
-                <label>
-                    <?php _e('Customer email addresses', 'woocommerce-multi-emails') ?>
-                </label>
+                                printf(
+                                    '<div class="field-row"><input placeholder="%s" name="email-recipients[%d][emails]" type="email" value="%s"></div>',
+                                    __('Email address(es)', 'multi-emails-woocommerce'),
+                                    $item_no,
+                                    esc_attr($recipient_item['emails'])
+                                );
 
-                <span class="multi-emails-woocommerce-tooltip">
-                    <span class="dashicons dashicons-editor-help"></span>
-                    <span class="tooltiptext"><?php _e('Add additional email addresses for customer.', 'multi-emails-woocommerce') ?></span>
-                </span>
-            </th>
+                                echo '<div class="field-row">';
+                                printf('<select class="multil-emails-woocommerce-recipient-categoires" name="email-recipients[%s][categories][]" multiple>', $item_no);
+                                echo $this->get_categories($recipient_item['categories']);
+                                echo '</select>';
+                                echo '</div>';
 
-            <td>
-                <ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items) ?></ul>
-                <a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php _e('Add email address', 'multi-emails-woocommerce') ?></a>
-            </td>
-        </tr>
-    </table>
+                                echo '<div class="field-row">';
+                                printf('<select class="multi-emails-woocommerce-search-product" name="email-recipients[%d][products][]" multiple>', $item_no);
+                                echo $this->get_products($recipient_item['products']);
+                                echo '</select>';
+                                echo '</div>';
 
-    <?php submit_button()  ?>
-</form>
+                                echo '</fieldset>';
+                            }
 
+                            ?>
+
+                            <button class="button" id="woocommerce-multi-emails-add-recipient"><?php _e('Add Recipient', 'multi-emails-woocommerce') ?></button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label>
+                                <?php _e('Customer email addresses', 'multi-emails-woocommerce') ?>
+                            </label>
+
+                            <span class="multi-emails-woocommerce-tooltip">
+                                <span class="dashicons dashicons-editor-help"></span>
+                                <span class="tooltiptext"><?php _e('Add additional email addresses for customer.', 'multi-emails-woocommerce') ?></span>
+                            </span>
+                        </th>
+
+                        <td>
+                            <ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items) ?></ul>
+                            <a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php _e('Add email address', 'multi-emails-woocommerce') ?></a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label>
+                                <?php _e('Additional email notifications', 'multi-emails-woocommerce') ?>
+                            </label>
+                        </th>
+
+                        <td>
+                            <label>
+                                <input type="checkbox" name="enable_addtional_email_notifications" value="yes" <?php checked('yes', $enable_addtional_email_notifications) ?>>
+                                <?php _e('Enable this option for additional email notifications', 'multi-emails-woocommerce') ?>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label>
+                                <?php _e('Display additional email fields', 'multi-emails-woocommerce') ?>
+                            </label>
+                        </th>
+
+                        <td>
+
+                            <div class="input-inline-row">
+                                <label>
+                                    <input type="checkbox" name="additional_email_pages[]" value="account" <?php checked(true, in_array('account', $additional_email_pages)) ?>>
+                                    <?php _e('Account page', 'multi-emails-woocommerce') ?>
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" name="additional_email_pages[]" value="checkout" <?php checked(true, in_array('checkout', $additional_email_pages)) ?>>
+                                    <?php _e('Checkout', 'multi-emails-woocommerce') ?>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </div>
+        </div>
+
+        <?php submit_button()  ?>
+    </form>
+
+</div>
 
 <script type="text/html" id="tmpl-woocommerce-multi-emails-recipient">
     <fieldset class="woocommerce-multi-emails-fieldset" data-no="{{data.index_no}}">

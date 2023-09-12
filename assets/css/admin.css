@@ -147,3 +147,8 @@
 .select2-dropdown--above {
     box-shadow: 0 0 0 1px #007cba, 0 -2px 1px rgba(0, 0, 0, .1)
 }
+
+.input-inline-row {
+    display: flex;
+    gap: 20px;
+}

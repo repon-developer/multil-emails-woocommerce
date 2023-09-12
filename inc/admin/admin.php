@@ -55,6 +55,20 @@ final class Admin {
         }
 
         update_option('multi-emails-woocommerce-customer-emails', $customer_emails);
+
+        $enable_addtional_email_notifications = 'no';
+        if (isset($post_data['enable_addtional_email_notifications'])) {
+            $enable_addtional_email_notifications = 'yes';
+        }
+
+        update_option('enable_addtional_email_notifications', $enable_addtional_email_notifications);
+
+        $additional_email_pages = [];
+        if (isset($post_data['additional_email_pages']) && is_array($post_data['additional_email_pages'])) {
+            $additional_email_pages = $post_data['additional_email_pages'];
+        }
+
+        update_option('multi_email_woocommerce_additional_email_pages', $additional_email_pages);
     }
 
     /**

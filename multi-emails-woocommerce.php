@@ -2,24 +2,23 @@
 
 /**
  * Plugin Name: Multi-Emails for WooCommerce
+ * Plugin URI:
  * Description: Add to WooCommerce the ability to send orders to specified vendor emails using product ID or category. Optionally, allow registered users or customers to add multiple emails in their profile.
  * Version: 1.0.0
- * Author: Repon Hossain
- * Author URI: 
+ * Author: Artios Media
+ * Author URI: http://www.artiosmedia.com
+ * Assisting Developer:  Repon Hossain
+ * Copyright: © 2022-2023 Artios Media (email : contact@artiosmedia.com).
+ * License: GNU General Public License v3.0
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: multi-emails-woocommerce
+ * Domain Path: /languages
  * 
- * WC requires at least: 5.0
- * WC tested up to: 8.0.2
+ * Tested up to:         6.3.0
+ * WC requires at least: 4.6.0
+ * WC tested up to:      8.0.1
+ * PHP tested up to:     8.2.7
  * 
- * Multi-Email for WooCommerce is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * Multi-Email for WooCommerce is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
  */
 
 if (!defined('ABSPATH')) {

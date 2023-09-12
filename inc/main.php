@@ -58,13 +58,13 @@ final class Main {
             require_once  MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/admin/admin.php';
         }
 
-        $this->add_email_form_fields();
-
         add_filter('plugin_action_links', array($this, 'add_plugin_link'), 10, 2);
+        add_filter('plugin_row_meta', array($this, 'add_donate_link'), 10, 2);
         add_action('woocommerce_checkout_order_processed', array($this, 'order_send_email'), 10, 3);
         add_action('woocommerce_new_order', array($this, 'save_additional_emails'), 10, 2);
-        add_filter('woocommerce_billing_fields', array($this, 'add_checkout_fields'));
+        add_filter('woocommerce_billing_fields', array($this, 'add_frontend_fields'));
         add_filter('woocommerce_mail_callback_params', array($this, 'add_additional_emails'), 100, 2);
+        add_filter('woocommerce_customer_meta_fields', array($this, 'admin_user_profile_emails'));
     }
 
     /**
@@ -81,58 +81,17 @@ final class Main {
     }
 
     /**
-     * Add filter to all customer email
-     * @since 1.0.0
-     */
-    public function add_email_form_fields() {
-        $wc_emails = \WC_Emails::instance();
-        
-        $customer_emails = [];
-        
-        $emails    = $wc_emails->get_emails();
-        foreach ($emails as $email_id => $wc_email) {
-            if (!$wc_email->is_customer_email()) {
-                continue;
-            }
-
-            $customer_emails[strtolower($email_id)] = $wc_email;
-        }
-
-        foreach ($customer_emails as $email) {
-            add_filter('woocommerce_settings_api_form_fields_' . $email->id, array($this, 'add_form_settings_field'), 20);
-        }
-    }
-
-    /**
-     * Add settings field for addtional email recipient
+     * Add donate link at plugin
      * @since 1.0.0
      * @return array
      */
-    public function add_form_settings_field($form_fields) {
-        $form_field_enable = false;
-        if (isset($form_fields['enabled'])) {
-            $form_field_enable = $form_fields['enabled'];
-            unset($form_fields['enabled']);
+    public function add_donate_link($links, $plugin_file) {
+        if (MULTI_EMAILS_WOOCOMMERCE_BASENAME == $plugin_file) {
+            $links[] = '<a href="' . esc_url('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=E7LS2JGFPLTH2') . '" target="_blank">' . esc_html__('Donation for Homeless', 'multi-emails-woocommerce') . '</a>';
         }
 
-        $new_options = [];
-
-        if ($form_field_enable) {
-            $new_options['enabled'] = $form_field_enable;
-        }
-
-        $new_options['additional_recipients_enabled'] = array(
-            'title'   => __('Additional recipients', 'multi-emails-woocommerce'),
-            'type'    => 'checkbox',
-            'default' => 'yes',
-            'label'   => __('Enable this notification for additional customer email addresses', 'multi-emails-woocommerce'),
-        );
-
-        $form_fields = $new_options + $form_fields;
-
-        return $form_fields;
+        return $links;
     }
-
 
     public function update_recipient($recipient) {
         return $this->recipient;
@@ -193,7 +152,18 @@ final class Main {
      * @since 1.0.0
      * @return array
      */
-    public function add_checkout_fields($fields) {
+    public function add_frontend_fields($fields) {
+        $additional_pages = Utils::get_additional_email_pages();
+
+        if (is_checkout() && !in_array('checkout', $additional_pages)) {
+            return $fields;
+        }
+
+        if (is_account_page() && !in_array('account', $additional_pages)) {
+            return $fields;
+        }
+
+
         $billing_email_priority = $fields['billing_email']['priority'];
 
         $start = 0;
@@ -243,7 +213,8 @@ final class Main {
      * @return array
      */
     public function add_additional_emails($params, \WC_Email $email) {
-        if (!$email->is_customer_email() || $email->get_option('additional_recipients_enabled') !== 'yes') {
+        $enable_addtional_email_notifications = get_option('enable_addtional_email_notifications', 'yes');
+        if (!$email->is_customer_email() || $enable_addtional_email_notifications !== 'yes') {
             return $params;
         }
 
@@ -260,6 +231,19 @@ final class Main {
         array_unshift($additional_recipients, $params[0]);
         $params[0] = implode(',', $additional_recipients);
         return $params;
+    }
+
+    public function admin_user_profile_emails($fields) {
+        $additional_emails = Utils::get_additional_email_fields();
+
+        foreach ($additional_emails as $meta_key => $field_label) {
+            $fields['billing']['fields'][$meta_key] = [
+                'label'       => $field_label,
+                'description' => ''
+            ];
+        }
+
+        return $fields;
     }
 }
 
