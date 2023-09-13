@@ -71,8 +71,8 @@ add_action('plugins_loaded', 'multi_emails_woocommerce_startup');
 function multi_emails_woocommerce_php_missing() {
     $notice = sprintf(
         esc_html__('%1$s need %2$s version %3$s or greater.', 'multi-emails-woocommerce'),
-        '<strong>' . __('Multi Emails for WooCommerce', 'multi-emails-woocommerce') . '</strong>',
-        '<strong>' . __('PHP', 'multi-emails-woocommerce') . '</strong>',
+        '<strong>Multi Emails for WooCommerce</strong>',
+        '<strong>PHP</strong>',
         MULTI_EMAILS_WOOCOMMERCE_MIN_PHP_VERSION
     );
 
@@ -94,8 +94,8 @@ function multi_emails_woocommerce_missing() {
 
     $notice = sprintf(
         __('%1$s need %2$s to be installed and activated to function properly. %3$s', 'multi-emails-woocommerce'),
-        '<strong>' . __('Multi Emails for WooCommerce', 'multi-emails-woocommerce') . '</strong>',
-        '<strong>' . __('WooCommerce', 'multi-emails-woocommerce') . '</strong>',
+        '<strong>Multi Emails for WooCommerce</strong>',
+        '<strong>WooCommerce</strong>',
         '<a href="' . esc_url($notice_url) . '">' . $notice_title . '</a>'
     );
 
@@ -107,6 +107,6 @@ function multi_emails_woocommerce_missing() {
  * @since 1.0.0
  */
 function multi_emails_woocommerce_load_textdomain() {
-    load_plugin_textdomain('multi-emails-woocommerce');
+    load_plugin_textdomain('multi-emails-woocommerce', false, basename(dirname(__FILE__)) . '/languages');
 }
 add_action('init', 'multi_emails_woocommerce_load_textdomain');

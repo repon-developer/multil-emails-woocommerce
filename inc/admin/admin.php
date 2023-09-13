@@ -107,10 +107,13 @@ final class Admin {
             return;
         }
 
-        echo '<div id="multi-emails-woocommerce-feedback-notice" class="notice notice-info is-dismissible">';
-        echo '<p>How do you like <strong>Multi-Emails for WooCommerce</strong>? Your feedback assures the continued maintenance of this plugin! <a class="btn-leave-feedback button button-primary" href="https://wordpress.org/plugins/multi-emails-for-woocommerce/#reviews" target="_blank">Leave Feedback</a></p>';
-        echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', 'multi-emails-woocommerce') . '</span></button>';
-        echo '</div>';
+        printf(
+            '<div id="multi-emails-woocommerce-feedback-notice" class="notice notice-info is-dismissible">
+            <p>' . __('How do you like %s? Your feedback assures the continued maintenance of this plugin! %s.', 'multi-emails-woocommerce') . '</p>
+            <button type="button" class="notice-dismiss"></button></div>',
+            '<strong>Multi-Emails for WooCommerce</strong>',
+            sprintf('<a class="btn-leave-feedback button button-primary" href="https://wordpress.org/plugins/multi-emails-for-woocommerce/#reviews" target="_blank">%s</a>', __('Leave Feedback', 'multi-emails-woocommerce'))
+        );
     }
 
     /**

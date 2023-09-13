@@ -50,6 +50,10 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                     <tr>
                         <th>
                             <label><?php _e('Company Recipient(s)', 'multi-emails-woocommerce') ?></label>
+                            <span class="multi-emails-woocommerce-tooltip">
+                                <span class="dashicons dashicons-editor-help"></span>
+                                <span class="tooltiptext"><?php _e('Enter any email to deliver cart order for fullfillment using any category or product.', 'multi-emails-woocommerce') ?></span>
+                            </span>
                         </th>
                         <td>
 
@@ -92,7 +96,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                     <tr>
                         <th>
                             <label>
-                                <?php _e('Additional email Notifications', 'multi-emails-woocommerce') ?>
+                                <?php _e('Additional Email Notifications', 'multi-emails-woocommerce') ?>
                             </label>
                         </th>
 
@@ -125,7 +129,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                     <tr>
                         <th>
                             <label>
-                                <?php _e('Display additional email fields', 'multi-emails-woocommerce') ?>
+                                <?php _e('Display Additional Email Fields', 'multi-emails-woocommerce') ?>
                             </label>
                         </th>
 
