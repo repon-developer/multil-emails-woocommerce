@@ -76,6 +76,12 @@ class Utils {
         foreach ($customer_emails as $field_label) {
             $start++;
             $key = self::get_additional_email_key($start);
+
+            if (empty($field_label)) {
+                $field_label = __('Email address', 'multi-emails-woocommerce') . ' ' . ($start + 1);
+            }
+
+
             $addtional_emails[$key] = $field_label;
         }
 

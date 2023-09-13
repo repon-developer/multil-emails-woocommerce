@@ -149,7 +149,7 @@ final class Admin {
      */
     public function output() {
         echo '<div class="wrap multi-emails-woocommerce-wrap">';
-        echo '<h1 class="wp-heading-inline">' . __('Multiple email recipients', 'multi-emails-woocommerce') . '</h1>';
+        echo '<h1 class="wp-heading-inline" style="font-size:20px;font-weight:600">' . __('Multiple Email Recipients', 'multi-emails-woocommerce') . '</h1>';
         echo '<hr class="wp-header-end">';
         require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/admin/settings.php';
         echo '</div>';

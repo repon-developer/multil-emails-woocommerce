@@ -92,24 +92,6 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                     <tr>
                         <th>
                             <label>
-                                <?php _e('Customer email addresses', 'multi-emails-woocommerce') ?>
-                            </label>
-
-                            <span class="multi-emails-woocommerce-tooltip">
-                                <span class="dashicons dashicons-editor-help"></span>
-                                <span class="tooltiptext"><?php _e('Add additional email addresses for customer.', 'multi-emails-woocommerce') ?></span>
-                            </span>
-                        </th>
-
-                        <td>
-                            <ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items) ?></ul>
-                            <a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php _e('Add email address', 'multi-emails-woocommerce') ?></a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>
-                            <label>
                                 <?php _e('Additional email notifications', 'multi-emails-woocommerce') ?>
                             </label>
                         </th>
@@ -119,6 +101,24 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                                 <input type="checkbox" name="enable_addtional_email_notifications" value="yes" <?php checked('yes', $enable_addtional_email_notifications) ?>>
                                 <?php _e('Enable this option for additional email notifications', 'multi-emails-woocommerce') ?>
                             </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label>
+                                <?php _e('Customer email labels', 'multi-emails-woocommerce') ?>
+                            </label>
+
+                            <span class="multi-emails-woocommerce-tooltip">
+                                <span class="dashicons dashicons-editor-help"></span>
+                                <span class="tooltiptext"><?php _e('Please enter label of email field. It will display on user frontend.', 'multi-emails-woocommerce') ?></span>
+                            </span>
+                        </th>
+
+                        <td>
+                            <ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items) ?></ul>
+                            <a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php _e('Add email field', 'multi-emails-woocommerce') ?></a>
                         </td>
                     </tr>
 
