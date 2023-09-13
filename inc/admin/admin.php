@@ -25,6 +25,9 @@ final class Admin {
         add_action('init', array($this, 'handle_submission_form'));
         add_action('admin_menu', array($this, 'admin_menu'), 200);
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+        add_action('admin_notices', array($this, 'admin_notices'));
+
+        add_action('wp_ajax_multi_emails_woocommerce_handle_notice', array($this, 'handle_admin_notice'));
     }
 
     /**
@@ -72,6 +75,45 @@ final class Admin {
     }
 
     /**
+     * Handle feedback notice
+     * @since 1.0.0
+     */
+    public function handle_admin_notice() {
+        $post_data = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+        if (empty($post_data['type'])) {
+            wp_send_json_error();
+        }
+
+        $action_type = $post_data['type'];
+
+        if ($action_type === 'feedback') {
+            update_option('multi_emails_woocommerce_hide_feedback_notice', 'yes');
+        }
+
+        if ($action_type === 'dismiss') {
+            setcookie('multi_emails_woocommerce_hide_feedback_notice', 'yes', strtotime('+30 days'), '/');
+        }
+
+        wp_send_json_success();
+    }
+
+    /**
+     * Show admin notice for getting feedback
+     * @since 1.0.0
+     */
+    public function admin_notices() {
+        $hide_notice = get_option('multi_emails_woocommerce_hide_feedback_notice', 'no');
+        if ($hide_notice === 'yes' || isset($_COOKIE['multi_emails_woocommerce_hide_feedback_notice'])) {
+            return;
+        }
+
+        echo '<div id="multi-emails-woocommerce-feedback-notice" class="notice notice-info is-dismissible">';
+        echo '<p>How do you like <strong>Multi-Emails for WooCommerce</strong>? Your feedback assures the continued maintenance of this plugin! <a class="btn-leave-feedback button button-primary" href="https://wordpress.org/plugins/multi-emails-for-woocommerce/#reviews" target="_blank">Leave Feedback</a></p>';
+        echo '<button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.', 'multi-emails-woocommerce') . '</span></button>';
+        echo '</div>';
+    }
+
+    /**
      * Admin menu
      * @since 1.0.0
      */
@@ -84,16 +126,18 @@ final class Admin {
      * @since 1.0.0
      */
     public function enqueue_scripts() {
+        wp_enqueue_script('multi-emails-woocommerce-dashboard', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/js/dashboard.js', ['jquery'], MULTI_EMAILS_WOOCOMMERCE_VERSION, true);
+
         preg_match('/multi-emails-woocommerce/', get_current_screen()->id, $matches);
         if (sizeof($matches) == 0) {
             return;
         };
 
-        wp_register_style('select2', MULTI_EMAILS_WOOCOMMERCE_URL . '/assets/css/select2.css', [], '4.0.3');
+        wp_register_style('select2', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/css/select2.css', [], '4.0.3');
         wp_register_script('select2', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/js/select2.js', array('jquery'), '4.0.3', true);
 
-        wp_enqueue_style('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . '/assets/css/admin.css', ['select2']);
-        wp_enqueue_script('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . '/assets/js/admin.js', ['jquery', 'select2', 'wp-util'], MULTI_EMAILS_WOOCOMMERCE_VERSION, true);
+        wp_enqueue_style('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/css/admin.css', ['select2']);
+        wp_enqueue_script('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/js/admin.js', ['jquery', 'select2', 'wp-util'], MULTI_EMAILS_WOOCOMMERCE_VERSION, true);
         wp_localize_script('multi-emails-woocommerce', 'multi_emails_woocommerce', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'i10n' => array(
