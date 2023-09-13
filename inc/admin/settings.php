@@ -39,7 +39,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
         <div class="postbox">
 
             <div class="postbox-header">
-                <h2 class="hndle ui-sortable-handle"><?php _e('Multiple email settings', 'multi-emails-woocommerce') ?> </h2>
+                <h2 class="hndle ui-sortable-handle"><?php _e('Multiple Email Settings', 'multi-emails-woocommerce') ?> </h2>
             </div>
 
             <div class="inside">
@@ -92,7 +92,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                     <tr>
                         <th>
                             <label>
-                                <?php _e('Additional email notifications', 'multi-emails-woocommerce') ?>
+                                <?php _e('Additional email Notifications', 'multi-emails-woocommerce') ?>
                             </label>
                         </th>
 
@@ -107,12 +107,12 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                     <tr>
                         <th>
                             <label>
-                                <?php _e('Customer email labels', 'multi-emails-woocommerce') ?>
+                                <?php _e('Customer Email Labels', 'multi-emails-woocommerce') ?>
                             </label>
 
                             <span class="multi-emails-woocommerce-tooltip">
                                 <span class="dashicons dashicons-editor-help"></span>
-                                <span class="tooltiptext"><?php _e('Please enter label of email field. It will display on user frontend.', 'multi-emails-woocommerce') ?></span>
+                                <span class="tooltiptext"><?php _e('Please enter label of email field. It will display on user front end.', 'multi-emails-woocommerce') ?></span>
                             </span>
                         </th>
 
