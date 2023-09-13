@@ -127,6 +127,9 @@ final class Admin {
      */
     public function enqueue_scripts() {
         wp_enqueue_script('multi-emails-woocommerce-dashboard', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/js/dashboard.js', ['jquery'], MULTI_EMAILS_WOOCOMMERCE_VERSION, true);
+        wp_localize_script('multi-emails-woocommerce-dashboard', 'multi_emails_woocommerce_dashboard', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+        ));
 
         preg_match('/multi-emails-woocommerce/', get_current_screen()->id, $matches);
         if (sizeof($matches) == 0) {
