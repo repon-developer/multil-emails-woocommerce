@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: BUG-EMAIL-ADDR <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: yyyy-mm-dd hh:mm+0000\n"
-"PO-Revision-Date: 2023-09-13 12:08+0600\n"
+"PO-Revision-Date: 2023-09-13 12:19+0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -118,8 +118,8 @@ msgid "Additional Email Notifications"
 msgstr "Notifications supplémentaires par courrier électronique"
 
 #: inc/admin/settings.php:106
-msgid "Enable this option for additional email notifications"
-msgstr "Activez cette option pour des notifications supplémentaires par e-mail"
+msgid "Enable this option for additional email notifications."
+msgstr "Activez cette option pour des notifications par e-mail supplémentaires."
 
 #: inc/admin/settings.php:114
 msgid "Customer Email Labels"

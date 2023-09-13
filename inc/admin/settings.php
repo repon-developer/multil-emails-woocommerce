@@ -103,7 +103,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                         <td>
                             <label>
                                 <input type="checkbox" name="enable_addtional_email_notifications" value="yes" <?php checked('yes', $enable_addtional_email_notifications) ?>>
-                                <?php _e('Enable this option for additional email notifications', 'multi-emails-woocommerce') ?>
+                                <?php _e('Enable this option for additional email notifications.', 'multi-emails-woocommerce') ?>
                             </label>
                         </td>
                     </tr>
