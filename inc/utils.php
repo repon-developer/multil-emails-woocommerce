@@ -56,7 +56,7 @@ class Utils {
      * @return string
      */
     public static function get_additional_email_key($number) {
-        return 'billing_email_' . $number;
+        return 'mew_billing_email_' . $number;
     }
 
     /** 
