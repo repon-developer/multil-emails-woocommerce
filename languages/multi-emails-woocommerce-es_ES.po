@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: BUG-EMAIL-ADDR <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: yyyy-mm-dd hh:mm+0000\n"
-"PO-Revision-Date: 2023-09-13 12:19+0600\n"
+"PO-Revision-Date: 2023-09-14 11:09+0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -53,8 +53,7 @@ msgstr "Dirección de correo electrónico"
 #: inc/admin/admin.php:112
 msgid "How do you like %s? Your feedback assures the continued maintenance of this plugin! %s."
 msgstr ""
-"¿Cómo te gusta %s? ¡Sus comentarios garantizan el mantenimiento continuo de este "
-"complemento! %s."
+"¿Cómo te gusta %s? ¡Sus comentarios garantizan el mantenimiento continuo de este complemento! %s."
 
 #: inc/admin/admin.php:115
 msgid "Leave Feedback"
@@ -103,8 +102,8 @@ msgstr "Destinataria (s) de la empresa"
 #: inc/admin/settings.php:55
 msgid "Enter any email to deliver cart order for fullfillment using any category or product."
 msgstr ""
-"Ingrese cualquier correo electrónico para entregar el pedido del carrito para su "
-"cumplimiento utilizando cualquier categoría o producto."
+"Ingrese cualquier correo electrónico para entregar el pedido del carrito para su cumplimiento "
+"utilizando cualquier categoría o producto."
 
 #: inc/admin/settings.php:70 inc/admin/settings.php:168
 msgid "Email address(es)"
@@ -119,18 +118,19 @@ msgid "Additional Email Notifications"
 msgstr "Notificaciones adicionales por correo electrónico"
 
 #: inc/admin/settings.php:106
-msgid "Enable this option for additional email notifications."
-msgstr "Habilite esta opción para recibir notificaciones adicionales por correo electrónico."
+msgid "Enable this option for additional customer email notifications."
+msgstr ""
+"Habilite esta opción para recibir notificaciones adicionales por correo electrónico de los clientes."
 
 #: inc/admin/settings.php:114
 msgid "Customer Email Labels"
 msgstr "Etiquetas de correo electrónico del cliente"
 
 #: inc/admin/settings.php:119
-msgid "Please enter label of email field. It will display on user front end."
+msgid "Please enter the label of the email field, it will display in the user's account and checkout."
 msgstr ""
-"Por favor ingrese la etiqueta del campo de correo electrónico. Se mostrará en la interfaz "
-"del usuario."
+"Ingrese la etiqueta del campo de correo electrónico, se mostrará en la cuenta del usuario y en el "
+"proceso de pago."
 
 #: inc/admin/settings.php:125
 msgid "Add email field"

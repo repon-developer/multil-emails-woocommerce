@@ -103,7 +103,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                         <td>
                             <label>
                                 <input type="checkbox" name="enable_addtional_email_notifications" value="yes" <?php checked('yes', $enable_addtional_email_notifications) ?>>
-                                <?php _e('Enable this option for additional email notifications.', 'multi-emails-woocommerce') ?>
+                                <?php _e('Enable this option for additional customer email notifications.', 'multi-emails-woocommerce') ?>
                             </label>
                         </td>
                     </tr>
@@ -116,7 +116,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 
                             <span class="multi-emails-woocommerce-tooltip">
                                 <span class="dashicons dashicons-editor-help"></span>
-                                <span class="tooltiptext"><?php _e('Please enter label of email field. It will display on user front end.', 'multi-emails-woocommerce') ?></span>
+                                <span class="tooltiptext"><?php _e("Please enter the label of the email field, it will display in the user's account and checkout.", 'multi-emails-woocommerce') ?></span>
                             </span>
                         </th>
 

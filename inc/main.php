@@ -177,6 +177,7 @@ final class Main {
                 'class'        => ['form-row-wide'],
                 'validate'     => ['email'],
                 'type'         => 'email',
+                'autocomplete' => 'none',
                 'priority'     => $billing_email_priority + $start,
             );
         }

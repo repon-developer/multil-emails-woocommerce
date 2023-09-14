@@ -118,7 +118,7 @@ msgid "Additional Email Notifications"
 msgstr ""
 
 #: inc/admin/settings.php:106
-msgid "Enable this option for additional email notifications."
+msgid "Enable this option for additional customer email notifications."
 msgstr ""
 
 #: inc/admin/settings.php:114
@@ -126,7 +126,7 @@ msgid "Customer Email Labels"
 msgstr ""
 
 #: inc/admin/settings.php:119
-msgid "Please enter label of email field. It will display on user front end."
+msgid "Please enter the label of the email field, it will display in the user's account and checkout."
 msgstr ""
 
 #: inc/admin/settings.php:125
