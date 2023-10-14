@@ -102,4 +102,32 @@ class Utils {
 
         return $additional_email_pages;
     }
+
+    /**
+     * Get company from product ID
+     * @since 1.0.0
+     * @return false|array
+     */
+    public static function get_company_from_product_id($product_id) {
+        $email_recipients = Utils::get_multi_recipient_settings();
+
+        $terms = get_the_terms($product_id, 'product_cat');
+
+        $term_ids = [];
+        if ($terms) {
+            $term_ids = wp_list_pluck($terms, 'term_id');
+        }
+
+        $company = false;
+
+        foreach ($email_recipients as $recipient_item) {
+            $matched_items = array_intersect($term_ids, $recipient_item['categories']);
+            if (sizeof($matched_items) > 0 || in_array($product_id, $recipient_item['products'])) {
+                $company = $recipient_item;
+                break;
+            }
+        }
+
+        return $company;
+    }
 }

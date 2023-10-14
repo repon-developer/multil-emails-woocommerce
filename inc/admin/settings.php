@@ -70,6 +70,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                                     'store_address_2' => '',
                                     'store_city' => '',
                                     'store_postcode' => '',
+                                    'store_country' => '',
                                     'editing' => 'no',
                                 ));
 
@@ -128,6 +129,26 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                                 );
                                 echo '</div>';
 
+                                $country_setting = (string) $recipient_item['store_country'];
+
+                                if (strstr($country_setting, ':')) {
+                                    $country_setting = explode(':', $country_setting);
+                                    $country         = current($country_setting);
+                                    $state           = end($country_setting);
+                                } else {
+                                    $country = $country_setting;
+                                    $state   = '*';
+                                } ?>
+
+                                <div class="field-row">
+                                    <select name="email-recipients[<?php echo esc_attr($item_no) ?>][store_country]" data-placeholder="<?php esc_attr_e('Choose a country / region&hellip;', 'multi-emails-woocommerce') ?>" class="wc-enhanced-select">
+                                        <option value="store_country"><?php esc_attr_e('Choose a country / region', 'multi-emails-woocommerce') ?></option>
+                                        <?php WC()->countries->country_dropdown_options($country, $state); ?>
+                                    </select>
+                                </div>
+
+                            <?php
+
                                 echo '<div class="field-row">';
                                 printf(
                                     '<input type="text" name="email-recipients[%s][store_postcode]" value="%s" placeholder="%s" >',
@@ -136,15 +157,6 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                                     __('Postcode / ZIP', 'multi-emails-woocommerce')
                                 );
                                 echo '</div>';
-
-                                // array(
-                                //     'title'    => __( 'Country / State', 'woocommerce' ),
-                                //     'desc'     => __( 'The country and state or province, if any, in which your business is located.', 'woocommerce' ),
-                                //     'id'       => 'woocommerce_default_country',
-                                //     'default'  => 'US:CA',
-                                //     'type'     => 'single_select_country',
-                                //     'desc_tip' => true,
-                                // )
 
                                 printf(
                                     '<input class="email-recipient-editing-input" type="hidden" name="email-recipients[%s][editing]" value="%s" />',
@@ -262,6 +274,13 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 
             <div class="field-row">
                 <input type="text" name="email-recipients[{{data.index_no}}][store_city]" placeholder="<?php _e('City', 'multi-emails-woocommerce') ?>">
+            </div>
+
+            <div class="field-row">
+                <select name="email-recipients[{{data.index_no}}][store_country]" data-placeholder="<?php esc_attr_e('Choose a country / region&hellip;', 'multi-emails-woocommerce') ?>" class="wc-enhanced-select">
+                    <option value="store_country"><?php esc_attr_e('Choose a country / region', 'multi-emails-woocommerce') ?></option>
+                    <?php WC()->countries->country_dropdown_options(); ?>
+                </select>
             </div>
 
             <div class="field-row">

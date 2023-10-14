@@ -15,8 +15,8 @@ input::placeholder {
 }
 
 
-.woocommerce-multi-emails-fieldset :is(input, select) {
-    width: 100%;
+.woocommerce-multi-emails-fieldset :is(input, select, .select2) {
+    width: 100%!important
 }
 
 .woocommerce-multi-emails-fieldset .remove-recipient {

@@ -24,6 +24,8 @@
         recipient.find('.multi-emails-woocommerce-search-product').select2({
             placeholder: multi_emails_woocommerce.i10n.search_product
         })
+
+        recipient.find('.wc-enhanced-select').selectWoo().addClass('enhanced');
     })
 
     $('body').on('click', '.woocommerce-multi-emails-fieldset .remove-recipient', function (e) {

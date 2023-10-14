@@ -65,6 +65,13 @@ final class Main {
         add_filter('woocommerce_billing_fields', array($this, 'add_frontend_fields'));
         add_filter('woocommerce_mail_callback_params', array($this, 'add_additional_emails'), 100, 2);
         add_filter('woocommerce_customer_meta_fields', array($this, 'admin_user_profile_emails'));
+
+        add_filter('woocommerce_countries_base_address', array($this, 'change_store_base_address'));
+        add_filter('woocommerce_countries_base_address_2', array($this, 'change_store_base_address_2'));
+        add_filter('woocommerce_countries_base_country', array($this, 'change_store_base_country'));
+        add_filter('woocommerce_countries_base_state', array($this, 'change_store_base_state'));
+        add_filter('woocommerce_countries_base_city', array($this, 'change_store_base_city'));
+        add_filter('woocommerce_countries_base_postcode', array($this, 'change_store_base_postcode'));
     }
 
     /**
@@ -112,19 +119,9 @@ final class Main {
         $order_recipient_emails = [];
 
         foreach ($order->get_items() as $item) {
-            $product_id = $item->get_product_id();
-            $terms = get_the_terms($product_id, 'product_cat');
-
-            $term_ids = [];
-            if ($terms) {
-                $term_ids = wp_list_pluck($terms, 'term_id');
-            }
-
-            foreach ($email_recipients as $recipient_item) {
-                $matched_items = array_intersect($term_ids, $recipient_item['categories']);
-                if (sizeof($matched_items) > 0 || in_array($product_id, $recipient_item['products'])) {
-                    $order_recipient_emails[] = $recipient_item['emails'];
-                }
+            $company = Utils::get_company_from_product_id($item->get_product_id());
+            if ($company) {
+                $order_recipient_emails[] = $company['emails'];
             }
         }
 
@@ -234,6 +231,11 @@ final class Main {
         return $params;
     }
 
+    /**
+     * Add additional field on wordpress profile page
+     * @since 1.0.0
+     * @return array
+     */
     public function admin_user_profile_emails($fields) {
         $additional_emails = Utils::get_additional_email_fields();
 
@@ -246,6 +248,176 @@ final class Main {
 
         return $fields;
     }
+
+    /**
+     * Change Woocommerce store address
+     * @since 1.0.0
+     * @return string
+     */
+    public function change_store_base_address($value) {
+        if (is_admin()) {
+            return $value;
+        }
+
+        $cart_items = WC()->cart->get_cart();
+        if (sizeof($cart_items) == 0) {
+            return $value;
+        }
+
+        foreach ($cart_items as $key => $cart_item) {
+            $company = Utils::get_company_from_product_id($cart_item['product_id']);
+
+            if (!empty($company['store_address'])) {
+                $value = $company['store_address'];
+                break;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Change Woocommerce store address_2
+     * @since 1.0.0
+     * @return string
+     */
+    public function change_store_base_address_2($value) {
+        if (is_admin()) {
+            return $value;
+        }
+
+        $cart_items = WC()->cart->get_cart();
+        if (sizeof($cart_items) == 0) {
+            return $value;
+        }
+
+        foreach ($cart_items as $key => $cart_item) {
+            $company = Utils::get_company_from_product_id($cart_item['product_id']);
+
+            if (!empty($company['store_address_2'])) {
+                $value = $company['store_address_2'];
+                break;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Change Woocommerce store country
+     * @since 1.0.0
+     * @return string
+     */
+    public function change_store_base_country($value) {
+        if (is_admin()) {
+            return $value;
+        }
+
+        $cart_items = WC()->cart->get_cart();
+        if (sizeof($cart_items) == 0) {
+            return $value;
+        }
+
+        foreach ($cart_items as $key => $cart_item) {
+            $company = Utils::get_company_from_product_id($cart_item['product_id']);
+
+            if (!empty($company['store_country'])) {
+                $store_country = explode(':', $company['store_country']);
+                if (!empty($store_country[0]) && $company['store_country'] !== 'store_country') {
+                    $value = $store_country[0];
+                }
+
+                break;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Change Woocommerce store state
+     * @since 1.0.0
+     * @return string
+     */
+    public function change_store_base_state($value) {
+        if (is_admin()) {
+            return $value;
+        }
+
+        $cart_items = WC()->cart->get_cart();
+        if (sizeof($cart_items) == 0) {
+            return $value;
+        }
+
+        foreach ($cart_items as $key => $cart_item) {
+            $company = Utils::get_company_from_product_id($cart_item['product_id']);
+
+            if (!empty($company['store_country'])) {
+                $store_country = explode(':', $company['store_country']);
+                if (!empty($store_country[1]) && $company['store_country'] !== 'store_country') {
+                    $value = $store_country[1];
+                }
+
+                break;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Change Woocommerce store city
+     * @since 1.0.0
+     * @return string
+     */
+    public function change_store_base_city($value) {
+        if (is_admin()) {
+            return $value;
+        }
+
+        $cart_items = WC()->cart->get_cart();
+        if (sizeof($cart_items) == 0) {
+            return $value;
+        }
+
+        foreach ($cart_items as $key => $cart_item) {
+            $company = Utils::get_company_from_product_id($cart_item['product_id']);
+            if (!empty($company['store_city'])) {
+                $value = $company['store_city'];
+                break;
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * Change Woocommerce store postcode
+     * @since 1.0.0
+     * @return string
+     */
+    public function change_store_base_postcode($value) {
+        if (is_admin()) {
+            return $value;
+        }
+
+        $cart_items = WC()->cart->get_cart();
+        if (sizeof($cart_items) == 0) {
+            return $value;
+        }
+
+        foreach ($cart_items as $key => $cart_item) {
+            $company = Utils::get_company_from_product_id($cart_item['product_id']);
+
+            if (!empty($company['store_postcode'])) {
+                $value = $company['store_postcode'];
+                break;
+            }
+        }
+
+        return $value;
+    }
 }
+
 
 Main::get_instance();
