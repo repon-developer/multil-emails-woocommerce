@@ -62,6 +62,17 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                             foreach ($email_recipients as $index_no => $recipient_item) {
                                 $item_no = $index_no + 1;
 
+                                $recipient_item = wp_parse_args($recipient_item, array(
+                                    'emails' => '',
+                                    'categories' => [],
+                                    'products' => [],
+                                    'store_address' => '',
+                                    'store_address_2' => '',
+                                    'store_city' => '',
+                                    'store_postcode' => '',
+                                    'editing' => 'no',
+                                ));
+
                                 printf('<fieldset class="woocommerce-multi-emails-fieldset" data-no="%d">', $item_no);
                                 echo '<span class="dashicons dashicons-remove remove-recipient"></span>';
 
@@ -82,6 +93,66 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                                 printf('<select class="multi-emails-woocommerce-search-product" name="email-recipients[%d][products][]" multiple>', $item_no);
                                 echo $this->get_products($recipient_item['products']);
                                 echo '</select>';
+                                echo '</div>';
+
+                                $address_group_class = 'store-address-field-group';
+                                if ($recipient_item['editing'] === 'yes') {
+                                    $address_group_class .= ' editing-address';
+                                }
+
+                                echo '<div class="' . $address_group_class . '">';
+                                echo '<div class="field-row">';
+                                printf(
+                                    '<input type="text" name="email-recipients[%s][store_address]" value="%s" placeholder="%s">',
+                                    $item_no,
+                                    $recipient_item['store_address'],
+                                    __('Address line 1', 'multi-emails-woocommerce')
+                                );
+                                echo '</div>';
+
+                                echo '<div class="field-row">';
+                                printf(
+                                    '<input type="text" name="email-recipients[%s][store_address_2]" value="%s" placeholder="%s" >',
+                                    $item_no,
+                                    $recipient_item['store_address_2'],
+                                    __('Address line 2', 'multi-emails-woocommerce')
+                                );
+                                echo '</div>';
+
+                                echo '<div class="field-row">';
+                                printf(
+                                    '<input type="text" name="email-recipients[%s][store_city]" value="%s" placeholder="%s" >',
+                                    $item_no,
+                                    $recipient_item['store_city'],
+                                    __('City', 'multi-emails-woocommerce')
+                                );
+                                echo '</div>';
+
+                                echo '<div class="field-row">';
+                                printf(
+                                    '<input type="text" name="email-recipients[%s][store_postcode]" value="%s" placeholder="%s" >',
+                                    $item_no,
+                                    $recipient_item['store_postcode'],
+                                    __('Postcode / ZIP', 'multi-emails-woocommerce')
+                                );
+                                echo '</div>';
+
+                                // array(
+                                //     'title'    => __( 'Country / State', 'woocommerce' ),
+                                //     'desc'     => __( 'The country and state or province, if any, in which your business is located.', 'woocommerce' ),
+                                //     'id'       => 'woocommerce_default_country',
+                                //     'default'  => 'US:CA',
+                                //     'type'     => 'single_select_country',
+                                //     'desc_tip' => true,
+                                // )
+
+                                printf(
+                                    '<input class="email-recipient-editing-input" type="hidden" name="email-recipients[%s][editing]" value="%s" />',
+                                    $item_no,
+                                    $recipient_item['editing']
+                                );
+
+                                printf('<a class="btn-address-view" href="#" data-show="%s" data-hide="%s"></a>', __('Show Address Fields', 'multi-emails-woocommerce'), __('Hide Address Fields', 'multi-emails-woocommerce'));
                                 echo '</div>';
 
                                 echo '</fieldset>';
@@ -178,6 +249,26 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
             <select class="multi-emails-woocommerce-search-product" name="email-recipients[{{data.index_no}}][products][]" multiple>
                 <?php echo $this->get_products() ?>
             </select>
+        </div>
+
+        <div class="store-address-field-group">
+            <div class="field-row">
+                <input type="text" name="email-recipients[{{data.index_no}}][store_address]" placeholder="<?php _e('Address line 1', 'multi-emails-woocommerce') ?>">
+            </div>
+
+            <div class="field-row">
+                <input type="text" name="email-recipients[{{data.index_no}}][store_address_2]" placeholder="<?php _e('Address line 2', 'multi-emails-woocommerce') ?>">
+            </div>
+
+            <div class="field-row">
+                <input type="text" name="email-recipients[{{data.index_no}}][store_city]" placeholder="<?php _e('City', 'multi-emails-woocommerce') ?>">
+            </div>
+
+            <div class="field-row">
+                <input type="text" name="email-recipients[{{data.index_no}}][store_postcode]" placeholder="<?php _e('Postcode / ZIP', 'multi-emails-woocommerce') ?>">
+            </div>
+
+            <a class="btn-address-view" href="#" data-show="<?php _e('Show Address Fields', 'multi-emails-woocommerce') ?>" data-hide="<?php _e('Hide Address Fields', 'multi-emails-woocommerce') ?>"></a>
         </div>
 
     </fieldset>

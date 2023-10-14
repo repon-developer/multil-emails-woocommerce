@@ -55,6 +55,16 @@
         }
     })
 
+    $('body').on('click', '.woocommerce-multi-emails-fieldset .store-address-field-group .btn-address-view', function (e) {
+        e.preventDefault();
+        const address_container = $(this).closest('.store-address-field-group').toggleClass('editing-address')
+        const editing_button_value = address_container.hasClass('editing-address') ? 'yes' : 'no';
+        address_container.find('.email-recipient-editing-input').val(editing_button_value);
+    })
+
+
+
+
 
 
 
