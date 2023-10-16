@@ -164,7 +164,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                                     $recipient_item['editing']
                                 );
 
-                                printf('<a class="btn-address-view" href="#" data-show="%s" data-hide="%s"></a>', __('Show Address Fields', 'multi-emails-woocommerce'), __('Hide Address Fields', 'multi-emails-woocommerce'));
+                                printf('<a class="btn-address-view" href="#" data-show="%s" data-hide="%s"></a>', esc_attr__("Enter Optional 'Shipped From' Address", 'multi-emails-woocommerce'), esc_attr__('Hide Address Field', 'multi-emails-woocommerce'));
                                 echo '</div>';
 
                                 echo '</fieldset>';
@@ -287,7 +287,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
                 <input type="text" name="email-recipients[{{data.index_no}}][store_postcode]" placeholder="<?php _e('Postcode / ZIP', 'multi-emails-woocommerce') ?>">
             </div>
 
-            <a class="btn-address-view" href="#" data-show="<?php _e('Show Address Fields', 'multi-emails-woocommerce') ?>" data-hide="<?php _e('Hide Address Fields', 'multi-emails-woocommerce') ?>"></a>
+            <a class="btn-address-view" href="#" data-show="<?php esc_attr_e("Enter Optional 'Shipped From' Address", 'multi-emails-woocommerce') ?>" data-hide="<?php _e('Hide Address Field', 'multi-emails-woocommerce') ?>"></a>
         </div>
 
     </fieldset>
