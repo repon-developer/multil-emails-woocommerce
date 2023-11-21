@@ -92,13 +92,13 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 
 								echo '<div class="field-row">';
 								printf('<select class="multil-emails-woocommerce-recipient-categoires" name="email-recipients[%s][categories][]" multiple>', absint($item_no));
-								echo $this->get_categories($recipient_item['categories']);
+								echo $this->get_categories($recipient_item['categories']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								echo '</select>';
 								echo '</div>';
 
 								echo '<div class="field-row">';
 								printf('<select class="multi-emails-woocommerce-search-product" name="email-recipients[%d][products][]" multiple>', absint($item_no));
-								echo $this->get_products($recipient_item['products']);
+								echo $this->get_products($recipient_item['products']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								echo '</select>';
 								echo '</div>';
 
@@ -211,7 +211,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 						</th>
 
 						<td>
-							<ul id="multi-emails-woocommerce-customer-emails"><?php echo wp_kses_post(implode("\n", $customer_emails_items)); ?></ul>
+							<ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></ul>
 							<a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php esc_html_e('Add email field', 'multi-emails-woocommerce'); ?></a>
 						</td>
 					</tr>
@@ -237,9 +237,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 								</label>
 							</div>
 						</td>
-					</tr>
-
-
+					</tr>                      
 				</table>
 			</div>
 		</div>
@@ -260,13 +258,13 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 
 		<div class="field-row">
 			<select class="multil-emails-woocommerce-recipient-categoires" name="email-recipients[{{data.index_no}}][categories][]" multiple placeholder="<?php esc_html_e('Search for category'); ?>">
-				<?php echo $this->get_categories(); ?>
+				<?php echo $this->get_categories(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</select>
 		</div>
 
 		<div class="field-row">
 			<select class="multi-emails-woocommerce-search-product" name="email-recipients[{{data.index_no}}][products][]" multiple>
-				<?php echo $this->get_products(); ?>
+				<?php echo $this->get_products(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</select>
 		</div>
 
