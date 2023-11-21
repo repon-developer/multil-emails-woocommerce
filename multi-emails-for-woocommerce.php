@@ -22,7 +22,7 @@
  */
 
 if (!defined('ABSPATH')) {
-    exit;
+	exit;
 }
 
 define('MULTI_EMAILS_WOOCOMMERCE_FILE', __FILE__);
@@ -35,78 +35,85 @@ define('MULTI_EMAILS_WOOCOMMERCE_MIN_PHP_VERSION', '7.4.3');
 
 /**
  * Declare HPOS compatibility
+ * 
  * @since 1.0.0
  */
 add_action('before_woocommerce_init', function () {
-    if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
-        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
-    }
+	if (class_exists(\Automattic\WooCommerce\Utilities\FeaturesUtil::class)) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+	}
 });
 
 require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/utils.php';
 
 /**
  * Startup woocommerce request
+ * 
  * @since 1.0.0
  */
 function multi_emails_woocommerce_startup() {
-    //Check PHP version. We need minimum version of PHP 7.4.3
-    if (version_compare(PHP_VERSION, MULTI_EMAILS_WOOCOMMERCE_MIN_PHP_VERSION, '<')) {
-        return add_action('admin_notices', 'multi_emails_woocommerce_php_missing');
-    }
+	//Check PHP version. We need minimum version of PHP 7.4.3
+	if (version_compare(PHP_VERSION, MULTI_EMAILS_WOOCOMMERCE_MIN_PHP_VERSION, '<')) {
+		return add_action('admin_notices', 'multi_emails_woocommerce_php_missing');
+	}
 
-    //Check WooCommerce activate
-    if (!class_exists('WooCommerce', false)) {
-        return add_action('admin_notices', 'multi_emails_woocommerce_missing');
-    }
+	//Check WooCommerce activate
+	if (!class_exists('WooCommerce', false)) {
+		return add_action('admin_notices', 'multi_emails_woocommerce_missing');
+	}
 
-    require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/main.php';
+	require_once MULTI_EMAILS_WOOCOMMERCE_PATH . '/inc/main.php';
 }
 add_action('plugins_loaded', 'multi_emails_woocommerce_startup');
 
 /**
  * Show admin notice if PHP version less than the minimum version required
+ * 
  * @since 1.0.0
  */
 function multi_emails_woocommerce_php_missing() {
-    $notice = sprintf(
-        esc_html__('%1$s need %2$s version %3$s or greater.', 'multi-emails-woocommerce'),
-        '<strong>Multi Emails for WooCommerce</strong>',
-        '<strong>PHP</strong>',
-        MULTI_EMAILS_WOOCOMMERCE_MIN_PHP_VERSION
-    );
+	$notice = sprintf(
+		/* translators: 1 for plugin name, 2 for PHP */
+		esc_html__('%1$s need %2$s version %3$s or greater.', 'multi-emails-woocommerce'),
+		'<strong>Multi Emails for WooCommerce</strong>',
+		'<strong>PHP</strong>',
+		MULTI_EMAILS_WOOCOMMERCE_MIN_PHP_VERSION
+	);
 
-    printf('<div class="notice notice-warning"><p>%1$s</p></div>', $notice);
+	printf('<div class="notice notice-warning"><p>%1$s</p></div>', wp_kses_post($notice));
 }
 
 /**
  * Admin notice for missing woocommerce
+ * 
  * @since 1.0.0
  */
 function multi_emails_woocommerce_missing() {
-    if (file_exists(WP_PLUGIN_DIR . '/woocommerce/woocommerce.php')) {
-        $notice_title = __('Activate WooCommerce', 'multi-emails-woocommerce');
-        $notice_url = wp_nonce_url('plugins.php?action=activate&plugin=woocommerce/woocommerce.php&plugin_status=all&paged=1', 'activate-plugin_woocommerce/woocommerce.php');
-    } else {
-        $notice_title = __('Install WooCommerce', 'multi-emails-woocommerce');
-        $notice_url = wp_nonce_url(self_admin_url('update.php?action=install-plugin&plugin=woocommerce'), 'install-plugin_woocommerce');
-    }
+	if (file_exists(WP_PLUGIN_DIR . '/woocommerce/woocommerce.php')) {
+		$notice_title = __('Activate WooCommerce', 'multi-emails-woocommerce');
+		$notice_url = wp_nonce_url('plugins.php?action=activate&plugin=woocommerce/woocommerce.php&plugin_status=all&paged=1', 'activate-plugin_woocommerce/woocommerce.php');
+	} else {
+		$notice_title = __('Install WooCommerce', 'multi-emails-woocommerce');
+		$notice_url = wp_nonce_url(self_admin_url('update.php?action=install-plugin&plugin=woocommerce'), 'install-plugin_woocommerce');
+	}
 
-    $notice = sprintf(
-        __('%1$s need %2$s to be installed and activated to function properly. %3$s', 'multi-emails-woocommerce'),
-        '<strong>Multi Emails for WooCommerce</strong>',
-        '<strong>WooCommerce</strong>',
-        '<a href="' . esc_url($notice_url) . '">' . $notice_title . '</a>'
-    );
+	$notice = sprintf(
+		/* translators: 1 for plugin name, 2 for WooCommerce */
+		__('%1$s need %2$s to be installed and activated to function properly. %3$s', 'multi-emails-woocommerce'),
+		'<strong>Multi Emails for WooCommerce</strong>',
+		'<strong>WooCommerce</strong>',
+		'<a href="' . esc_url($notice_url) . '">' . $notice_title . '</a>'
+	);
 
-    printf('<div class="notice notice-warning"><p>%1$s</p></div>', $notice);
+	printf('<div class="notice notice-warning"><p>%1$s</p></div>', wp_kses_post($notice));
 }
 
 /**
  * Load plugin text domain
+ * 
  * @since 1.0.0
  */
 function multi_emails_woocommerce_load_textdomain() {
-    load_plugin_textdomain('multi-emails-woocommerce', false, basename(dirname(__FILE__)) . '/languages');
+	load_plugin_textdomain('multi-emails-woocommerce', false, basename(dirname(__FILE__)) . '/languages');
 }
 add_action('init', 'multi_emails_woocommerce_load_textdomain');
