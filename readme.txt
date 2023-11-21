@@ -19,7 +19,7 @@ This automated delegation feature is desirable for WooCommerce systems that need
 
 The function of this unique plugin follows the logic of WooCommerce, where it will allow the customer to receive the default notices to the emails entered as follows: Order on-hold, Processing order, Completed order, Refunded order, Customer note, Reset password, and New account. The company recipient emails will in turn receive the default admin emails: New order, Cancelled order, and Failed order.
 
-This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email One" and "Email Two" as suggested.
+This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email One" and "Email Two" as suggested.
 
 The plugin's language support includes English, Spanish, French, and Russian.
 
@@ -50,13 +50,10 @@ PHP 7.4, 8.0, 8.1, and 8.2 compliant.
 Yes, attention is given on a staged installation with many other plugins via debug mode.
 
 = Is the plugin as simple to use as it looks? =
-Yes. No other plugin exists that adds an additional custom product code so simply.
+Yes. No other plugin exists that adds an additional emails to Woocommerce so easily.
 
 = Has there ever any compatibility issues? =
 Since it's release, nothing has been noted.
-
-= Can I rename the Product Code field to another title? =
-Previously, the function.php required a snippet addition to do so. As of version 1.0.6, in the settings panel you will find an option to edit the field title with a limit of 18 characters including spaces. Whatever title is entered will change on the user side and admin side and throughout the order process.
 
 = Is the code in the plugin proven stable? =
 
@@ -74,5 +71,5 @@ None to report as of the release version
 
 == Changelog ==
 
-1.0.0 09/15/23
+1.0.0 11/21/23
 - Initial release
