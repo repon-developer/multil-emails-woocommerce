@@ -221,16 +221,8 @@ $kses_allow_options = array(
 
 							$email_kses_allowed = array(
 								'li' => array(),
-								'input' => array(
-									'placeholder' => array(),
-									'class' => array(),
-									'type' => array(),
-									'name' => array(),
-									'value' => array(),
-								),
-								'span' => array(
-									'class' => array()
-								),
+								'input' => array('placeholder' => true, 'class' => true, 'type' => true, 'name' => true, 'value' => true),
+								'span' => array('class' => true),
 							);
 
 							?>
