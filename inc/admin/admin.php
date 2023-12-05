@@ -66,7 +66,7 @@ final class Admin {
 			$enable_addtional_email_notifications = 'yes';
 		}
 
-		update_option('enable_addtional_email_notifications', $enable_addtional_email_notifications);
+		update_option('multi_email_woocommerce_enable_addtional_email_notifications', $enable_addtional_email_notifications);
 
 		$additional_email_pages = [];
 		if (isset($post_data['additional_email_pages']) && is_array($post_data['additional_email_pages'])) {
@@ -150,7 +150,6 @@ final class Admin {
 		};
 
 		wp_register_style('select2', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/css/select2.css', [], '4.0.3');
-		wp_register_script('select2', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/js/select2.js', array('jquery'), '4.0.3', true);
 
 		wp_enqueue_style('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/css/admin.css', ['select2']);
 		wp_enqueue_script('multi-emails-woocommerce', MULTI_EMAILS_WOOCOMMERCE_URL . 'assets/js/admin.js', ['jquery', 'select2', 'wp-util'], MULTI_EMAILS_WOOCOMMERCE_VERSION, true);

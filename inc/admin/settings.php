@@ -35,9 +35,18 @@ $customer_emails_items = array_map(function ($item) {
 }, $customer_emails);
 
 
-$enable_addtional_email_notifications = get_option('enable_addtional_email_notifications', 'yes');
+$enable_addtional_email_notifications = get_option('multi_email_woocommerce_enable_addtional_email_notifications', 'yes');
 
-$additional_email_pages = Utils::get_additional_email_pages(); ?>
+$additional_email_pages = Utils::get_additional_email_pages();
+
+$kses_allow_options = array(
+	'option' => array(
+		'value' => array(),
+		'selected' => array()
+	)
+);
+
+?>
 
 <div id="poststuff">
 
@@ -92,13 +101,13 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 
 								echo '<div class="field-row">';
 								printf('<select class="multil-emails-woocommerce-recipient-categoires" name="email-recipients[%s][categories][]" multiple>', absint($item_no));
-								echo $this->get_categories($recipient_item['categories']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								echo wp_kses($this->get_categories($recipient_item['categories']), $kses_allow_options);
 								echo '</select>';
 								echo '</div>';
 
 								echo '<div class="field-row">';
 								printf('<select class="multi-emails-woocommerce-search-product" name="email-recipients[%d][products][]" multiple>', absint($item_no));
-								echo $this->get_products($recipient_item['products']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+								echo wp_kses($this->get_products($recipient_item['products']), $kses_allow_options);
 								echo '</select>';
 								echo '</div>';
 
@@ -145,7 +154,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 									$country = $country_setting;
 									$state   = '*';
 								}
-								?>
+							?>
 
 								<div class="field-row">
 									<select name="email-recipients[<?php echo absint($item_no); ?>][store_country]" data-placeholder="<?php esc_attr_e('Choose a country / region&hellip;', 'multi-emails-woocommerce'); ?>" class="wc-enhanced-select">
@@ -211,7 +220,24 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 						</th>
 
 						<td>
-							<ul id="multi-emails-woocommerce-customer-emails"><?php echo implode("\n", $customer_emails_items); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></ul>
+							<?php
+
+							$email_kses_allowed = array(
+								'li' => array(),
+								'input' => array(
+									'placeholder' => array(),
+									'class' => array(),
+									'type' => array(),
+									'name' => array(),
+									'value' => array(),
+								),
+								'span' => array(
+									'class' => array()
+								),
+							);
+							
+							?>
+							<ul id="multi-emails-woocommerce-customer-emails"><?php echo wp_kses(implode("\n", $customer_emails_items), $email_kses_allowed); ?></ul>
 							<a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php esc_html_e('Add email field', 'multi-emails-woocommerce'); ?></a>
 						</td>
 					</tr>
@@ -237,7 +263,7 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 								</label>
 							</div>
 						</td>
-					</tr>                      
+					</tr>
 				</table>
 			</div>
 		</div>
@@ -258,13 +284,13 @@ $additional_email_pages = Utils::get_additional_email_pages(); ?>
 
 		<div class="field-row">
 			<select class="multil-emails-woocommerce-recipient-categoires" name="email-recipients[{{data.index_no}}][categories][]" multiple placeholder="<?php esc_html_e('Search for category'); ?>">
-				<?php echo $this->get_categories(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo wp_kses($this->get_categories(), $kses_allow_options); ?>
 			</select>
 		</div>
 
 		<div class="field-row">
 			<select class="multi-emails-woocommerce-search-product" name="email-recipients[{{data.index_no}}][products][]" multiple>
-				<?php echo $this->get_products(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo wp_kses($this->get_products(), $kses_allow_options); ?>
 			</select>
 		</div>
 

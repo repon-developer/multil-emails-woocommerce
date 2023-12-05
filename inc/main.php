@@ -222,7 +222,7 @@ final class Main {
 	 * @return array
 	 */
 	public function add_additional_emails($params, \WC_Email $email) {
-		$enable_addtional_email_notifications = get_option('enable_addtional_email_notifications', 'yes');
+		$enable_addtional_email_notifications = get_option('multi_email_woocommerce_enable_addtional_email_notifications', 'yes');
 		if (!$email->is_customer_email() || 'yes' !== $enable_addtional_email_notifications) {
 			return $params;
 		}
