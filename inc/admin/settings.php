@@ -40,10 +40,7 @@ $enable_addtional_email_notifications = get_option('multi_email_woocommerce_enab
 $additional_email_pages = Utils::get_additional_email_pages();
 
 $kses_allow_options = array(
-	'option' => array(
-		'value' => array(),
-		'selected' => array()
-	)
+	'option' => array('value' => true, 'selected' => true)
 );
 
 ?>
@@ -235,7 +232,7 @@ $kses_allow_options = array(
 									'class' => array()
 								),
 							);
-							
+
 							?>
 							<ul id="multi-emails-woocommerce-customer-emails"><?php echo wp_kses(implode("\n", $customer_emails_items), $email_kses_allowed); ?></ul>
 							<a id="multi-emails-woocommerce-add-customer-email" href="#" class="button"><?php esc_html_e('Add email field', 'multi-emails-woocommerce'); ?></a>
