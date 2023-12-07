@@ -15,11 +15,13 @@ Now there is finally a reliable way to automatically assign recipients' email to
 
 == Description ==
 
-This automated delegation feature is desirable for WooCommerce systems that need to communicate with multiple sponsors, manufacturers, dropship affiliates, warehouse contacts, and an endless number of other endpoints. Previously, you could add a number of emails to a new order from the WooCommerce Settings > Email tab, but all the products would only be delivered to the assigned recipients. You had no way to selectively choose where different product orders were delivered without developer customizations or expensive commercial plugins.
+This automated delegation feature is desirable for WooCommerce systems that need to communicate with multiple sponsors, manufacturers, dropship affiliates, warehouse contacts, and an endless number of other endpoints. Previously, you could add several emails to a new order from the WooCommerce Settings > Email tab, but all the products would only be delivered to the assigned recipients. You had no way to selectively choose where different product orders were delivered without developer customizations or expensive commercial plugins.
 
-The function of this unique plugin follows the logic of WooCommerce, where it will allow the customer to receive the default notices to the emails entered as follows: Order on-hold, Processing order, Completed order, Refunded order, Customer note, Reset password, and New account. The company recipient emails will in turn receive the default admin emails: New order, Cancelled order, and Failed order.
+The function of this unique plugin follows the logic of WooCommerce, where it will allow the customer to receive the default notices to the emails entered as follows: Order on hold, Processing order, Completed order, Refunded order, Customer note, Reset password, and New account. The company recipient emails will in turn receive the default admin emails: New order, Cancelled order, and Failed order.
 
 This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email One" and "Email Two" as suggested.
+
+Added as an expanded feature during the plugin's creation, is the ability to install the address along with the email selected as the order's point of origin. This feature overrides the entered default sales origin address in WooCommerce, which allows the shipping to calculate based on the email's physical address, resulting in a much more accurate sales total.
 
 The plugin's language support includes English, Spanish, French, and Russian.
 
@@ -71,5 +73,5 @@ None to report as of the release version
 
 == Changelog ==
 
-1.0.0 11/21/23
+1.0.0 12/08/23
 - Initial release
