@@ -117,3 +117,16 @@ function multi_emails_woocommerce_load_textdomain() {
 	load_plugin_textdomain('multi-emails-woocommerce', false, basename(dirname(__FILE__)) . '/languages');
 }
 add_action('init', 'multi_emails_woocommerce_load_textdomain');
+
+/**
+ * Add install time after activated the plugin
+ * 
+ * @since 1.0.1
+ */
+function multi_emails_woocommerce_add_notice_timer() {
+	$installed_time = get_option('multi_emails_woocommerce_installed_on');
+	if ($installed_time === false) {
+		add_option('multi_emails_woocommerce_installed_on', current_time('mysql'));
+	}
+}
+add_action('init', 'multi_emails_woocommerce_add_notice_timer');

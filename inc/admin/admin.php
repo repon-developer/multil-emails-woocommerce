@@ -2,6 +2,7 @@
 
 namespace Multi_Emails_WooCommerce\Admin;
 
+use DateTime;
 use Multi_Emails_WooCommerce\Vendor;
 
 if (!defined('ABSPATH')) {
@@ -106,6 +107,14 @@ final class Admin {
 	 * @since 1.0.0
 	 */
 	public function admin_notices() {
+		$installed_time = get_option('multi_emails_woocommerce_installed_on');
+		
+		$date = new \DateTime($installed_time, wp_timezone());
+		$date->modify('+30 days');
+		if ($date->getTimestamp() > current_time('timestamp')) {
+			return;
+		}
+
 		$hide_notice = get_option('multi_emails_woocommerce_hide_feedback_notice', 'no');
 		if ('yes' === $hide_notice || isset($_COOKIE['multi_emails_woocommerce_hide_feedback_notice'])) {
 			return;
@@ -119,7 +128,7 @@ final class Admin {
 			'<strong>Multi-Emails for WooCommerce</strong>',
 			sprintf('<a class="btn-leave-feedback button button-primary" href="https://wordpress.org/plugins/multi-emails-for-woocommerce/#reviews" target="_blank">%s</a>', esc_html__('Leave Feedback', 'multi-emails-woocommerce'))
 		);
-		
+
 		echo '<button type="button" class="notice-dismiss"></button>';
 		echo '</div>';
 	}
