@@ -4,7 +4,7 @@
  * Plugin Name: Multi-Emails for WooCommerce
  * Plugin URI: https://wordpress.org/plugins/multi-emails-for-woocommerce/
  * Description: Add to WooCommerce the ability to send orders to specified vendor emails using product ID or category. Optionally, allow registered users or customers to add multiple emails in their profile.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Artios Media
  * Author URI: http://www.artiosmedia.com
  * Assisting Developer:  Repon Hossain
@@ -14,9 +14,9 @@
  * Text Domain: multi-emails-woocommerce
  * Domain Path: /languages
  * 
- * Tested up to:         6.3.0
+ * Tested up to:         6.4.2
  * WC requires at least: 4.6.0
- * WC tested up to:      8.0.1
+ * WC tested up to:      8.4.0
  * PHP tested up to:     8.2.7
  * 
  */
@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('MULTI_EMAILS_WOOCOMMERCE_FILE', __FILE__);
-define('MULTI_EMAILS_WOOCOMMERCE_VERSION', '1.0.0');
+define('MULTI_EMAILS_WOOCOMMERCE_VERSION', '1.0.1');
 define('MULTI_EMAILS_WOOCOMMERCE_BASENAME', plugin_basename(__FILE__));
 define('MULTI_EMAILS_WOOCOMMERCE_URL', trailingslashit(plugins_url('/', __FILE__)));
 define('MULTI_EMAILS_WOOCOMMERCE_PATH', trailingslashit(plugin_dir_path(__FILE__)));

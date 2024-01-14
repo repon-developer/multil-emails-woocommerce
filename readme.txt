@@ -2,11 +2,11 @@
 
 Contributors: Artiosmedia, repon.wp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=E7LS2JGFPLTH2
-Tags: internal product code, product code, company product number, product id number, product id code, second sku
+Tags: order emails, dropship email, fulfillment email, ship from source, split orders, additional emails, extra user emails
 Requires at least: 4.6
-Tested up to: 6.3.1
-Version: 1.0.0
-Stable tag: 1.0.0
+Tested up to: 6.4.2
+Version: 1.0.1
+Stable tag: 1.0.1
 Requires PHP: 7.4.33
 License: GPLv3 or later license and included
 URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -19,7 +19,7 @@ This automated delegation feature is desirable for WooCommerce systems that need
 
 The function of this unique plugin follows the logic of WooCommerce, where it will allow the customer to receive the default notices to the emails entered as follows: Order on hold, Processing order, Completed order, Refunded order, Customer note, Reset password, and New account. The company recipient emails will in turn receive the default admin emails: New order, Cancelled order, and Failed order.
 
-This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email One" and "Email Two" as suggested.
+This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email Two" and "Email Three" as they default.
 
 Added as an expanded feature during the plugin's creation, is the ability to install the address along with the email selected as the order's point of origin. This feature overrides the entered default sales origin address in WooCommerce, which allows the shipping to calculate based on the email's physical address, resulting in a much more accurate sales total.
 
@@ -64,8 +64,10 @@ Please click the following link to check the current stability of this plugin:
 
 == Screenshots ==
 
-1. The Multi-Emails settings panel
-2. Example of registered user with extra email options
+1. The overall Multiple Email Recipents settings panel
+2. Shows where the unique address is entered related to recipients email
+3. Shows implimentation of additional user emails added
+4. Shows additional customer emails added to WooCommerce database
 
 == Upgrade Notice ==
 
@@ -73,5 +75,5 @@ None to report as of the release version
 
 == Changelog ==
 
-1.0.0 12/08/23
+1.0.0 01/08/24
 - Initial release
