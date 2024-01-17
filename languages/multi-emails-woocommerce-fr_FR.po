@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: BUG-EMAIL-ADDR <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: yyyy-mm-dd hh:mm+0000\n"
-"PO-Revision-Date: 2023-09-14 11:09+0600\n"
+"PO-Revision-Date: 2024-01-17 10:38+0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #: multi-emails-for-woocommerce.php:73
 #, php-format
@@ -100,9 +100,7 @@ msgstr "Entreprise Destinataire(s)"
 
 #: inc/admin/settings.php:55
 msgid "Enter any email to deliver cart order for fullfillment using any category or product."
-msgstr ""
-"Entrez n’importe quel e-mail pour livrer la commande du panier pour exécution en utilisant "
-"n’importe quelle catégorie ou produit."
+msgstr "Entrez n’importe quel e-mail pour livrer la commande du panier pour exécution en utilisant n’importe quelle catégorie ou produit."
 
 #: inc/admin/settings.php:70 inc/admin/settings.php:168
 msgid "Email address(es)"
@@ -126,9 +124,7 @@ msgstr "Étiquettes de courrier électronique des clients"
 
 #: inc/admin/settings.php:119
 msgid "Please enter the label of the email field, it will display in the user's account and checkout."
-msgstr ""
-"Veuillez saisir le libellé du champ e-mail, il s'affichera dans le compte de l'utilisateur et lors "
-"du paiement."
+msgstr "Veuillez saisir le libellé du champ e-mail, il s'affichera dans le compte de l'utilisateur et lors du paiement."
 
 #: inc/admin/settings.php:125
 msgid "Add email field"
@@ -149,3 +145,9 @@ msgstr "Vérifier"
 #: inc/admin/settings.php:172
 msgid "Search for category"
 msgstr "Rechercher une catégorie"
+
+#: inc/main.php:517
+msgid "Items selected in your cart that include a custom shipping origin must be completed separately from additional items that might be ordered. The following categories and items can be included in your order: %s. Please finalize this special order and then create a new order for additional items."
+msgstr ""
+"Les articles sélectionnés dans votre panier qui incluent une origine d'expédition personnalisée doivent être complétés séparément des articles supplémentaires qui pourraient être commandés. Les catégories et articles suivants peuvent être inclus dans votre commande : %s. Veuillez finaliser cette "
+"commande spéciale, puis créer une nouvelle commande pour des articles supplémentaires."

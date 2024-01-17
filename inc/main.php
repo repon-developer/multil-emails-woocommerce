@@ -76,6 +76,7 @@ final class Main {
 		add_filter('woocommerce_countries_base_state', array($this, 'change_store_base_state'));
 		add_filter('woocommerce_countries_base_city', array($this, 'change_store_base_city'));
 		add_filter('woocommerce_countries_base_postcode', array($this, 'change_store_base_postcode'));
+		add_filter('woocommerce_add_to_cart_validation', array($this, 'add_to_cart_validation'), 100, 2);
 	}
 
 	/**
@@ -268,7 +269,7 @@ final class Main {
 	 * @return string
 	 */
 	public function change_store_base_address($value) {
-		if (is_admin()) {
+		if (is_admin() || is_null(WC()->cart)) {
 			return $value;
 		}
 
@@ -296,7 +297,7 @@ final class Main {
 	 * @return string
 	 */
 	public function change_store_base_address_2($value) {
-		if (is_admin()) {
+		if (is_admin() || is_null(WC()->cart)) {
 			return $value;
 		}
 
@@ -324,7 +325,7 @@ final class Main {
 	 * @return string
 	 */
 	public function change_store_base_country($value) {
-		if (is_admin()) {
+		if (is_admin() || is_null(WC()->cart)) {
 			return $value;
 		}
 
@@ -356,7 +357,7 @@ final class Main {
 	 * @return string
 	 */
 	public function change_store_base_state($value) {
-		if (is_admin()) {
+		if (is_admin() || is_null(WC()->cart)) {
 			return $value;
 		}
 
@@ -388,7 +389,7 @@ final class Main {
 	 * @return string
 	 */
 	public function change_store_base_city($value) {
-		if (is_admin()) {
+		if (is_admin() || is_null(WC()->cart)) {
 			return $value;
 		}
 
@@ -415,7 +416,7 @@ final class Main {
 	 * @return string
 	 */
 	public function change_store_base_postcode($value) {
-		if (is_admin()) {
+		if (is_admin() || is_null(WC()->cart)) {
 			return $value;
 		}
 
@@ -434,6 +435,86 @@ final class Main {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Check before add product to cart
+	 * 
+	 * @since 1.0.1
+	 */
+	public function add_to_cart_validation($valid, $product_id) {
+		$cart_items = WC()->cart->get_cart();
+		if (count($cart_items) == 0) {
+			return $valid;
+		}
+
+		$companies = [];
+
+		foreach ($cart_items as $key => $cart_item) {
+			$company = Utils::get_company_from_product_id($cart_item['product_id']);
+			if (!empty($company['emails'])) {
+				$companies[] = $company['emails'];
+			}
+		}
+
+		$companies = array_unique(array_filter($companies));
+		if (count($companies) === 0) {
+			return $valid;
+		}
+
+		$selected_company_email = current($companies);
+
+		$current_product_company = Utils::get_company_from_product_id($product_id);
+		if (empty($current_product_company['emails'])) {
+			return $valid;
+		}
+
+		if ($selected_company_email === $current_product_company['emails']) {
+			return $valid;
+		}
+
+		$order_companies = array_filter(Utils::get_multi_recipient_settings(), function ($company) use ($selected_company_email) {
+			return $company['emails'] === $selected_company_email;
+		});
+
+		$order_company = current($order_companies);
+
+
+		$company_items_link = [];
+
+		if (isset($order_company['categories']) && is_array($order_company['categories'])) {
+			foreach ($order_company['categories'] as $term_id) {
+				$term = get_term($term_id, 'product_cat');
+				if (!is_a($term, 'WP_Term')) {
+					continue;
+				}
+
+				$company_items_link[] = sprintf('<a target="_blank" href="%s">%s</a>', esc_url(get_term_link($term)), $term->name);
+			}
+		}
+
+		if (isset($order_company['products']) && is_array($order_company['products'])) {
+			foreach ($order_company['products'] as $product_id) {
+				$_product = get_post($product_id);
+				if (!is_a($_product, 'WP_Post')) {
+					continue;
+				}
+
+				$company_items_link[] = sprintf('<a href="%s">%s</a>', esc_url(get_the_permalink($_product)), get_the_title($_product));
+			}
+		}
+
+		$company_items_link = array_unique($company_items_link);
+
+		$notice = sprintf(
+			/* translators: 1 for company items */
+			__('Items selected in your cart that include a custom shipping origin must be completed separately from additional items that might be ordered. The following categories and items can be included in your order: %s. Please finalize this special order and then create a new order for additional items.',  'multi-emails-woocommerce'),
+			implode(', ', $company_items_link)
+		);
+
+		wc_add_notice($notice, 'error');
+
+		return false;
 	}
 }
 
