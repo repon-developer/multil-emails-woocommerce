@@ -207,7 +207,7 @@ final class Admin {
 
 		$html = array_map(function ($product) use ($selected_products) {
 			$option_selected = in_array($product->get_id(), $selected_products);
-			return sprintf('<option value="%d" %s>%s</option>', $product->get_id(), selected(true, $option_selected, false), esc_html($product->name));
+			return sprintf('<option value="%d" %s>%s</option>', $product->get_id(), selected(true, $option_selected, false), esc_html($product->get_name()));
 		}, $products);
 
 		return implode("\n", $html);

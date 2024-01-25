@@ -82,7 +82,7 @@ class Utils {
 			$key = self::get_additional_email_key($start);
 
 			if (empty($field_label)) {
-				$field_label = __('Email address', 'multi-emails-woocommerce') . ' ' . ( $start + 1 );
+				$field_label = __('Email address', 'multi-emails-woocommerce') . ' ' . ($start + 1);
 			}
 
 
@@ -106,6 +106,49 @@ class Utils {
 		}
 
 		return $additional_email_pages;
+	}
+
+	/**
+	 * Get recipient from cart
+	 * 
+	 * @since 1.0.0
+	 * @return false|integer
+	 */
+	public static function get_recipient_from_cart() {
+		$cart_items = WC()->cart->get_cart();
+
+
+		$email_recipients = Utils::get_multi_recipient_settings();
+
+		$matched_recipients = [];
+		foreach ($email_recipients as $recipient_id => $recipient_item) {
+
+			foreach ($cart_items as $key => $cart_item) {
+				$cart_product_id = $cart_item['product_id'];
+
+				$product_categories = get_the_terms($cart_product_id, 'product_cat');
+
+				$term_ids = [];
+				if ($product_categories) {
+					$term_ids = wp_list_pluck($product_categories, 'term_id');
+				}
+
+
+				$matched_items = array_intersect($term_ids, $recipient_item['categories']);
+				if (count($matched_items) > 0 || in_array($cart_product_id, $recipient_item['products'])) {
+					$matched_recipients[] = $recipient_id;
+				}
+			}
+		}
+
+		$matched_recipients = array_unique($matched_recipients);
+		if (count($matched_recipients) == 0) {
+			return false;
+		}
+
+		$recipient_id = current($matched_recipients);
+
+		return $email_recipients[$recipient_id];
 	}
 
 	/**

@@ -19,7 +19,9 @@ This automated delegation feature is desirable for WooCommerce systems that need
 
 The function of this unique plugin follows the logic of WooCommerce, where it will allow the customer to receive the default notices to the emails entered as follows: Order on hold, Processing order, Completed order, Refunded order, Customer note, Reset password, and New account. The company recipient emails will in turn receive the default admin emails: New order, Cancelled order, and Failed order.
 
-This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email Two" and "Email Three" as they default.
+This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email Two" and "Email Three" as examples.
+
+IMPORTANT NOTE: The logic of this plugin dictates that the a buyer cannot combined products (WordPress default shipping address and unique addresses) combined in the same order. If an item is placed in the cart that is selected by the plugin to be shipped from a plugin defined address, a message alerts the buyer that only the items listed in the "X" category(s) can be purchased at the same time, not in combination with other items not related to that unique shipping point. Otherwise, the calculated shipping results will not be accurate.
 
 Added as an expanded feature during the plugin's creation, is the ability to install the address along with the email selected as the order's point of origin. This feature overrides the entered default sales origin address in WooCommerce, which allows the shipping to calculate based on the email's physical address, resulting in a much more accurate sales total.
 
@@ -31,7 +33,7 @@ The plugin's language support includes English, Spanish, French, and Russian.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Enter the required content from the settings screen link found in the WooCommerce menu. 
 
-== Technical Details for Release 1.0.0 ==
+== Technical Details for Release 1.0.1 ==
 
 Load time: 0.279 s; Memory usage: 3.61 MiB
 PHP up to tested version: 8.2.7
@@ -74,6 +76,12 @@ Please click the following link to check the current stability of this plugin:
 None to report as of the release version
 
 == Changelog ==
+
+1.0.1 01/22/24
+- Fix the user response banner timer
+- Isolate an order to a category if plugin address used
+- Assure compliance with WordPress 6.4.1
+- Assure compliance with WooCommerce 8.3.1
 
 1.0.0 01/08/24
 - Initial release

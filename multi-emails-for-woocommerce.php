@@ -16,7 +16,7 @@
  * 
  * Tested up to:         6.4.2
  * WC requires at least: 4.6.0
- * WC tested up to:      8.4.0
+ * WC tested up to:      8.5.1
  * PHP tested up to:     8.2.7
  * 
  */

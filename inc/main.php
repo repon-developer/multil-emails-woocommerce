@@ -448,61 +448,40 @@ final class Main {
 			return $valid;
 		}
 
-		$companies = [];
-
-		foreach ($cart_items as $key => $cart_item) {
-			$company = Utils::get_company_from_product_id($cart_item['product_id']);
-			if (!empty($company['emails'])) {
-				$companies[] = $company['emails'];
-			}
-		}
-
-		$companies = array_unique(array_filter($companies));
-		if (count($companies) === 0) {
+		$cart_recipient = Utils::get_recipient_from_cart();
+		if ($cart_recipient === false) {
 			return $valid;
 		}
 
-		$selected_company_email = current($companies);
-
-		$current_product_company = Utils::get_company_from_product_id($product_id);
-		if (empty($current_product_company['emails'])) {
+		$current_product_recipient = Utils::get_company_from_product_id($product_id);
+		if ($current_product_recipient === false) {
 			return $valid;
 		}
 
-		if ($selected_company_email === $current_product_company['emails']) {
+		if ($cart_recipient['emails'] === $current_product_recipient['emails']) {
 			return $valid;
 		}
-
-		$order_companies = array_filter(Utils::get_multi_recipient_settings(), function ($company) use ($selected_company_email) {
-			return $company['emails'] === $selected_company_email;
-		});
-
-		$order_company = current($order_companies);
-
 
 		$company_items_link = [];
 
-		if (isset($order_company['categories']) && is_array($order_company['categories'])) {
-			foreach ($order_company['categories'] as $term_id) {
-				$term = get_term($term_id, 'product_cat');
-				if (!is_a($term, 'WP_Term')) {
-					continue;
-				}
-
-				$company_items_link[] = sprintf('<a target="_blank" href="%s">%s</a>', esc_url(get_term_link($term)), $term->name);
+		foreach ($cart_recipient['categories'] as $term_id) {
+			$term = get_term($term_id, 'product_cat');
+			if (!is_a($term, 'WP_Term')) {
+				continue;
 			}
+
+			$company_items_link[] = sprintf('<a target="_blank" href="%s">%s</a>', esc_url(get_term_link($term)), $term->name);
 		}
 
-		if (isset($order_company['products']) && is_array($order_company['products'])) {
-			foreach ($order_company['products'] as $product_id) {
-				$_product = get_post($product_id);
-				if (!is_a($_product, 'WP_Post')) {
-					continue;
-				}
-
-				$company_items_link[] = sprintf('<a href="%s">%s</a>', esc_url(get_the_permalink($_product)), get_the_title($_product));
+		foreach ($cart_recipient['products'] as $product_id) {
+			$_product = get_post($product_id);
+			if (!is_a($_product, 'WP_Post')) {
+				continue;
 			}
+
+			$company_items_link[] = sprintf('<a href="%s">%s</a>', esc_url(get_the_permalink($_product)), get_the_title($_product));
 		}
+
 
 		$company_items_link = array_unique($company_items_link);
 
@@ -517,6 +496,5 @@ final class Main {
 		return false;
 	}
 }
-
 
 Main::get_instance();
