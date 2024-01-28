@@ -6,6 +6,8 @@ if (!defined('ABSPATH')) {
 
 use Multi_Emails_WooCommerce\Utils;
 
+$settings = Utils::get_settings();
+
 $post_data = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
 
 $email_recipients = Utils::get_multi_recipient_settings();
@@ -17,8 +19,7 @@ $email_recipients = array_map(function ($recipient_item) {
 	return Utils::sanitize_recipient($recipient_item);
 }, $email_recipients);
 
-
-$customer_emails = get_option('multi-emails-woocommerce-customer-emails');
+$customer_emails = $settings['customer_emails'];
 if (!is_array($customer_emails)) {
 	$customer_emails = [];
 }
@@ -34,14 +35,12 @@ $customer_emails_items = array_map(function ($item) {
 	);
 }, $customer_emails);
 
-
-$enable_addtional_email_notifications = get_option('multi_email_woocommerce_enable_addtional_email_notifications', 'yes');
-
 $additional_email_pages = Utils::get_additional_email_pages();
 
 $kses_allow_options = array(
 	'option' => array('value' => true, 'selected' => true)
 );
+
 
 ?>
 
@@ -198,7 +197,7 @@ $kses_allow_options = array(
 
 						<td>
 							<label>
-								<input type="checkbox" name="enable_addtional_email_notifications" value="yes" <?php checked('yes', $enable_addtional_email_notifications); ?>>
+								<input type="checkbox" name="enable_addtional_email_notifications" value="yes" <?php checked('yes', $settings['enable_addtional_email_notifications']); ?>>
 								<?php esc_html_e('Enable this option for additional customer email notifications.', 'multi-emails-woocommerce'); ?>
 							</label>
 						</td>
@@ -239,7 +238,6 @@ $kses_allow_options = array(
 						</th>
 
 						<td>
-
 							<div class="input-inline-row">
 								<label>
 									<input type="checkbox" name="additional_email_pages[]" value="account" <?php checked(true, in_array('account', $additional_email_pages)); ?>>
@@ -250,6 +248,23 @@ $kses_allow_options = array(
 									<input type="checkbox" name="additional_email_pages[]" value="checkout" <?php checked(true, in_array('checkout', $additional_email_pages)); ?>>
 									<?php esc_html_e('Checkout', 'multi-emails-woocommerce'); ?>
 								</label>
+							</div>
+						</td>
+					</tr>
+
+					<tr>
+						<th>
+							<?php esc_html_e('Text for Product Order Conflict Notice', 'multi-emails-woocommerce'); ?>
+						</th>
+
+						<td>
+							<label>
+								<input type="checkbox" name="order_conflict_notice" value="yes" <?php checked('yes', $settings['order_conflict_notice_deactivate']); ?>>
+								<?php esc_html_e('Deactive conflict notice', 'multi-emails-woocommerce'); ?>
+							</label>
+
+							<div id="order-conflict-notice-text-field">
+								<textarea name="order_conflict_notice_text" id=""><?php wp_kses_post($settings['order_conflict_notice_deactivate']) ?></textarea>
 							</div>
 						</td>
 					</tr>

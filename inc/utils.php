@@ -12,6 +12,23 @@ if (!defined('ABSPATH')) {
 class Utils {
 
 	/**
+	 * Get settings of multi-email woocommerce
+	 * 
+	 * @since 1.0.1
+	 */
+	public static function get_settings() {
+		$settings = get_option('multi_email_woocommerce_settings');
+
+		return wp_parse_args($settings, array(
+			'customer_emails' => [],
+			'enable_addtional_email_notifications' => 'yes',
+			'additional_email_pages' => ['account', 'checkout'],
+			'order_conflict_notice_deactivate' => 'no',
+			'order_conflict_notice_text' => '',
+		));
+	}
+
+	/**
 	 * Sanitize recipient data
 	 * 
 	 * @since 1.0.0
@@ -69,7 +86,7 @@ class Utils {
 	 * @return array
 	 */
 	public static function get_additional_email_fields() {
-		$customer_emails = get_option('multi-emails-woocommerce-customer-emails');
+		$customer_emails = self::get_settings()['customer_emails'];
 		if (!is_array($customer_emails) || empty($customer_emails)) {
 			$customer_emails = [];
 		}
@@ -85,7 +102,6 @@ class Utils {
 				$field_label = __('Email address', 'multi-emails-woocommerce') . ' ' . ($start + 1);
 			}
 
-
 			$addtional_emails[$key] = $field_label;
 		}
 
@@ -100,7 +116,7 @@ class Utils {
 	 */
 
 	public static function get_additional_email_pages() {
-		$additional_email_pages = get_option('multi_email_woocommerce_additional_email_pages', ['account', 'checkout']);
+		$additional_email_pages = self::get_settings()['additional_email_pages'];
 		if (!is_array($additional_email_pages)) {
 			$additional_email_pages = [];
 		}

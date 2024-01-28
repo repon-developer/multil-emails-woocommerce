@@ -223,7 +223,7 @@ final class Main {
 	 * @return array
 	 */
 	public function add_additional_emails($params, \WC_Email $email) {
-		$enable_addtional_email_notifications = get_option('multi_email_woocommerce_enable_addtional_email_notifications', 'yes');
+		$enable_addtional_email_notifications = Utils::get_settings()['enable_addtional_email_notifications'];
 		if (!$email->is_customer_email() || 'yes' !== $enable_addtional_email_notifications) {
 			return $params;
 		}
@@ -443,6 +443,11 @@ final class Main {
 	 * @since 1.0.1
 	 */
 	public function add_to_cart_validation($valid, $product_id) {
+		$order_conflict_notice = Utils::get_settings()['order_conflict_notice_deactivate'];
+		if ($order_conflict_notice == 'yes') {
+			return $valid;
+		}
+
 		$cart_items = WC()->cart->get_cart();
 		if (count($cart_items) == 0) {
 			return $valid;

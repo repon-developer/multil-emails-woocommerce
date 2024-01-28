@@ -60,21 +60,25 @@ final class Admin {
 			$customer_emails = $post_data['customer-emails'];
 		}
 
-		update_option('multi-emails-woocommerce-customer-emails', $customer_emails);
-
 		$enable_addtional_email_notifications = 'no';
 		if (isset($post_data['enable_addtional_email_notifications'])) {
 			$enable_addtional_email_notifications = 'yes';
 		}
-
-		update_option('multi_email_woocommerce_enable_addtional_email_notifications', $enable_addtional_email_notifications);
 
 		$additional_email_pages = [];
 		if (isset($post_data['additional_email_pages']) && is_array($post_data['additional_email_pages'])) {
 			$additional_email_pages = $post_data['additional_email_pages'];
 		}
 
-		update_option('multi_email_woocommerce_additional_email_pages', $additional_email_pages);
+		$settings = array(
+			'customer_emails' => $customer_emails,
+			'enable_addtional_email_notifications' => $enable_addtional_email_notifications,
+			'additional_email_pages' => $additional_email_pages,
+			'order_conflict_notice_deactivate' => isset($post_data['order_conflict_notice']) ? 'yes' : 'no',
+			'order_conflict_notice_text' => isset($post_data['order_conflict_notice_text']) ? $post_data['order_conflict_notice_text'] : '',
+		);
+
+		update_option('multi_email_woocommerce_settings', $settings);
 	}
 
 	/**
@@ -108,7 +112,7 @@ final class Admin {
 	 */
 	public function admin_notices() {
 		$installed_time = get_option('multi_emails_woocommerce_installed_on');
-		
+
 		$date = new \DateTime($installed_time, wp_timezone());
 		$date->modify('+30 days');
 		if ($date->getTimestamp() > current_time('timestamp')) {
