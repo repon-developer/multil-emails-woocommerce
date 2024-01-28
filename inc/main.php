@@ -443,7 +443,9 @@ final class Main {
 	 * @since 1.0.1
 	 */
 	public function add_to_cart_validation($valid, $product_id) {
-		$order_conflict_notice = Utils::get_settings()['order_conflict_notice_deactivate'];
+		$settings = Utils::get_settings();
+
+		$order_conflict_notice = $settings['order_conflict_notice_deactivate'];
 		if ($order_conflict_notice == 'yes') {
 			return $valid;
 		}
@@ -495,6 +497,10 @@ final class Main {
 			__('Items selected in your cart that include a custom shipping origin must be completed separately from additional items that might be ordered. The following categories and items can be included in your order: %s. Please finalize this special order and then create a new order for additional items.',  'multi-emails-woocommerce'),
 			implode(', ', $company_items_link)
 		);
+
+		if (!empty($settings['order_conflict_notice_text'])) {
+			$notice = $settings['order_conflict_notice_text'];
+		}
 
 		wc_add_notice($notice, 'error');
 

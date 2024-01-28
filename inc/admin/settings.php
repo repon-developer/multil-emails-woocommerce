@@ -264,7 +264,9 @@ $kses_allow_options = array(
 							</label>
 
 							<div id="order-conflict-notice-text-field">
-								<textarea name="order_conflict_notice_text" id=""><?php wp_kses_post($settings['order_conflict_notice_deactivate']) ?></textarea>
+								<?php wp_editor($settings['order_conflict_notice_text'], 'order_conflict_notice_text', array(
+									'textarea_rows' => 5
+								)); ?>
 							</div>
 						</td>
 					</tr>

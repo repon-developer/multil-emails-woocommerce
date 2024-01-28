@@ -175,3 +175,7 @@ input::placeholder {
     display: flex;
     gap: 20px;
 }
+
+#order-conflict-notice-text-field {
+	margin-top: 20px;
+}
