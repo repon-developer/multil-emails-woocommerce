@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: BUG-EMAIL-ADDR <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: yyyy-mm-dd hh:mm+0000\n"
-"PO-Revision-Date: 2024-01-17 10:39+0600\n"
+"PO-Revision-Date: 2024-02-01 09:43+0600\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -146,8 +146,14 @@ msgstr "Verificar"
 msgid "Search for category"
 msgstr "Buscar categoría"
 
-#: inc/main.php:517
-msgid "Items selected in your cart that include a custom shipping origin must be completed separately from additional items that might be ordered. The following categories and items can be included in your order: %s. Please finalize this special order and then create a new order for additional items."
-msgstr ""
-"Los artículos seleccionados en su carrito que incluyen un origen de envío personalizado deben completarse por separado de los artículos adicionales que puedan solicitarse. Las siguientes categorías y artículos pueden incluirse en su pedido: %s. Finalice este pedido especial y luego cree un nuevo "
-"pedido para artículos adicionales."
+#: inc/admin/settings.php:257
+msgid "Product Order Conflict Notice"
+msgstr "Aviso de conflicto de pedidos de productos"
+
+#: inc/admin/settings.php:263
+msgid "Deactivate conflict notice"
+msgstr "Desactivar aviso de conflicto"
+
+#: inc/admin/settings.php:267
+msgid "The text notice is injected in the cart if an item is selected that is not of the same vendor as the other item(s) already selected."
+msgstr "El aviso de texto se inserta en el carrito si se selecciona un artículo que no es del mismo proveedor que los otros artículos ya seleccionados."

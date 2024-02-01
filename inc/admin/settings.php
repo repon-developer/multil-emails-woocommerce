@@ -254,18 +254,23 @@ $kses_allow_options = array(
 
 					<tr>
 						<th>
-							<?php esc_html_e('Text for Product Order Conflict Notice', 'multi-emails-woocommerce'); ?>
+							<?php esc_html_e('Product Order Conflict Notice', 'multi-emails-woocommerce'); ?>
 						</th>
 
 						<td>
 							<label>
 								<input type="checkbox" name="order_conflict_notice" value="yes" <?php checked('yes', $settings['order_conflict_notice_deactivate']); ?>>
-								<?php esc_html_e('Deactive conflict notice', 'multi-emails-woocommerce'); ?>
+								<?php esc_html_e('Deactivate conflict notice', 'multi-emails-woocommerce'); ?>
+
+								<span class="multi-emails-woocommerce-tooltip">
+									<span class="dashicons dashicons-editor-help"></span>
+									<span class="tooltiptext"><?php esc_html_e('The text notice is injected in the cart if an item is selected that is not of the same vendor as the other item(s) already selected.', 'multi-emails-woocommerce'); ?></span>
+								</span>
 							</label>
 
 							<div id="order-conflict-notice-text-field">
 								<?php wp_editor($settings['order_conflict_notice_text'], 'order_conflict_notice_text', array(
-									'textarea_rows' => 5
+									'textarea_rows' => 4
 								)); ?>
 							</div>
 						</td>

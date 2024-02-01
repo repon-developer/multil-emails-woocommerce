@@ -489,18 +489,13 @@ final class Main {
 			$company_items_link[] = sprintf('<a href="%s">%s</a>', esc_url(get_the_permalink($_product)), get_the_title($_product));
 		}
 
+		$notice = trim($settings['order_conflict_notice_text']);
+		if (empty($notice)) {
+			return false;
+		}
 
 		$company_items_link = array_unique($company_items_link);
-
-		$notice = sprintf(
-			/* translators: 1 for company items */
-			__('Items selected in your cart that include a custom shipping origin must be completed separately from additional items that might be ordered. The following categories and items can be included in your order: %s. Please finalize this special order and then create a new order for additional items.',  'multi-emails-woocommerce'),
-			implode(', ', $company_items_link)
-		);
-
-		if (!empty($settings['order_conflict_notice_text'])) {
-			$notice = $settings['order_conflict_notice_text'];
-		}
+		$notice = str_replace('[category_and_product_links]', implode(', ', $company_items_link), $notice);
 
 		wc_add_notice($notice, 'error');
 

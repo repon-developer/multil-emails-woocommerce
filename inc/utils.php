@@ -21,10 +21,10 @@ class Utils {
 
 		return wp_parse_args($settings, array(
 			'customer_emails' => [],
-			'enable_addtional_email_notifications' => 'yes',
+			'enable_addtional_email_notifications' => 'no',
 			'additional_email_pages' => ['account', 'checkout'],
 			'order_conflict_notice_deactivate' => 'no',
-			'order_conflict_notice_text' => '',
+			'order_conflict_notice_text' => 'Items selected in your cart that include a custom shipping origin must be completed separately from additional items that might be ordered. The following categories and items can be included in your order: [category_and_product_links]. Please finalize this special order and then create a new order for additional items.',
 		));
 	}
 

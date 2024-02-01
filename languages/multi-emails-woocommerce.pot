@@ -149,6 +149,14 @@ msgstr ""
 msgid "Search for category"
 msgstr ""
 
-#: inc/main.php:517
-msgid "Items selected in your cart that include a custom shipping origin must be completed separately from additional items that might be ordered. The following categories and items can be included in your order: %s. Please finalize this special order and then create a new order for additional items."
+#: inc/admin/settings.php:257
+msgid "Product Order Conflict Notice"
+msgstr ""
+
+#: inc/admin/settings.php:263
+msgid "Deactivate conflict notice"
+msgstr ""
+
+#: inc/admin/settings.php:267
+msgid "The text notice is injected in the cart if an item is selected that is not of the same vendor as the other item(s) already selected."
 msgstr ""
