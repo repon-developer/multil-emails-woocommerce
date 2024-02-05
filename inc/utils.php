@@ -66,6 +66,23 @@ class Utils {
 			return Utils::sanitize_recipient($recipient_item);
 		}, $email_recipients);
 
+		foreach ($email_recipients as $recipient_id => $recipient_item) {
+			$recipient_categories = $recipient_item['categories'];
+
+			foreach ($recipient_categories as $recipient_term_id) {
+				$get_child_terms = get_terms(array(
+					'taxonomy' => 'product_cat',
+					'child_of' => $recipient_term_id
+				));
+
+				foreach ($get_child_terms as $term) {
+					$recipient_categories[] = $term->term_id;
+				}
+			}
+
+			$email_recipients[$recipient_id]['all_categories'] = array_map('absint', $recipient_categories);
+		}
+
 		return $email_recipients;
 	}
 
@@ -133,7 +150,6 @@ class Utils {
 	public static function get_recipient_from_cart() {
 		$cart_items = WC()->cart->get_cart();
 
-
 		$email_recipients = Utils::get_multi_recipient_settings();
 
 		$matched_recipients = [];
@@ -149,8 +165,7 @@ class Utils {
 					$term_ids = wp_list_pluck($product_categories, 'term_id');
 				}
 
-
-				$matched_items = array_intersect($term_ids, $recipient_item['categories']);
+				$matched_items = array_intersect($term_ids, $recipient_item['all_categories']);
 				if (count($matched_items) > 0 || in_array($cart_product_id, $recipient_item['products'])) {
 					$matched_recipients[] = $recipient_id;
 				}
@@ -184,7 +199,6 @@ class Utils {
 		}
 
 		$company = false;
-
 		foreach ($email_recipients as $recipient_item) {
 			$matched_items = array_intersect($term_ids, $recipient_item['categories']);
 			if (count($matched_items) > 0 || in_array($product_id, $recipient_item['products'])) {

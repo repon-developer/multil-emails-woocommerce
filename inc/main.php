@@ -460,17 +460,23 @@ final class Main {
 			return $valid;
 		}
 
-		$current_product_recipient = Utils::get_company_from_product_id($product_id);
-		if ($current_product_recipient === false) {
+		if (in_array($product_id, $cart_recipient['products'])) {
 			return $valid;
 		}
 
-		if ($cart_recipient['emails'] === $current_product_recipient['emails']) {
+		$terms = get_the_terms($product_id, 'product_cat');
+
+		$term_ids = [];
+		if ($terms) {
+			$term_ids = wp_list_pluck($terms, 'term_id');
+		}
+
+		$matched_items = array_intersect($term_ids, $cart_recipient['all_categories']);
+		if (count($matched_items) > 0) {
 			return $valid;
 		}
 
 		$company_items_link = [];
-
 		foreach ($cart_recipient['categories'] as $term_id) {
 			$term = get_term($term_id, 'product_cat');
 			if (!is_a($term, 'WP_Term')) {
