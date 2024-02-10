@@ -455,7 +455,7 @@ final class Main {
 			return $valid;
 		}
 
-		$cart_recipient = Utils::get_recipient_from_cart();
+		$cart_recipient = Utils::get_recipient_from_cart(true);
 		if ($cart_recipient === false) {
 			return $valid;
 		}

@@ -56,15 +56,22 @@ class Utils {
 	 * 
 	 * @return array
 	 */
-	public static function get_multi_recipient_settings() {
+	public static function get_multi_recipient_settings($has_addreess = false) {
 		$email_recipients = get_option('multi-emails-woocommerce-recipients');
 		if (!is_array($email_recipients)) {
 			$email_recipients = [];
 		}
 
-		$email_recipients = array_map(function ($recipient_item) {
+		$recipients = array_map(function ($recipient_item) {
 			return Utils::sanitize_recipient($recipient_item);
 		}, $email_recipients);
+
+		$email_recipients = array();
+		foreach ($recipients as $recipient_id => $recipient) {
+			if (!empty($recipient['store_address']) && !empty($recipient['store_city']) && !empty($recipient['store_country']) && !empty($recipient['store_postcode'])) {
+				$email_recipients[$recipient_id] = $recipient;
+			}
+		}
 
 		foreach ($email_recipients as $recipient_id => $recipient_item) {
 			$recipient_categories = $recipient_item['categories'];
@@ -145,12 +152,13 @@ class Utils {
 	 * Get recipient from cart
 	 * 
 	 * @since 1.0.0
+	 * @param boolean $has_address 
 	 * @return false|integer
 	 */
-	public static function get_recipient_from_cart() {
+	public static function get_recipient_from_cart($has_addreess = false) {
 		$cart_items = WC()->cart->get_cart();
 
-		$email_recipients = Utils::get_multi_recipient_settings();
+		$email_recipients = Utils::get_multi_recipient_settings($has_addreess);
 
 		$matched_recipients = [];
 		foreach ($email_recipients as $recipient_id => $recipient_item) {
