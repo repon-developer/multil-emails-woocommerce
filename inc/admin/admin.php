@@ -3,6 +3,7 @@
 namespace Multi_Emails_WooCommerce\Admin;
 
 use DateTime;
+use Multi_Emails_WooCommerce\Utils;
 use Multi_Emails_WooCommerce\Vendor;
 
 if (!defined('ABSPATH')) {
@@ -70,15 +71,21 @@ final class Admin {
 			$additional_email_pages = $post_data['additional_email_pages'];
 		}
 
+		$old_settings = get_option('multi_email_woocommerce_settings');
+
+		$customer_emails_lang_key = Utils::get_language_key('customer_emails');
+
+		$order_conflict_notice_text_lang_key = Utils::get_language_key('order_conflict_notice_text');
+
 		$settings = array(
-			'customer_emails' => $customer_emails,
+			$customer_emails_lang_key => $customer_emails,
 			'enable_addtional_email_notifications' => $enable_addtional_email_notifications,
 			'additional_email_pages' => $additional_email_pages,
 			'order_conflict_notice_deactivate' => isset($post_data['order_conflict_notice']) ? 'yes' : 'no',
-			'order_conflict_notice_text' => isset($post_data['order_conflict_notice_text']) ? $post_data['order_conflict_notice_text'] : '',
+			$order_conflict_notice_text_lang_key => isset($post_data['order_conflict_notice_text']) ? $post_data['order_conflict_notice_text'] : '',
 		);
 
-		update_option('multi_email_woocommerce_settings', $settings);
+		update_option('multi_email_woocommerce_settings', wp_parse_args($settings, $old_settings));
 	}
 
 	/**

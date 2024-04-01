@@ -4,26 +4,24 @@ Contributors: Artiosmedia, repon.wp
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=E7LS2JGFPLTH2
 Tags: order emails, dropship email, fulfillment email, ship from source, split orders, additional emails, extra user emails
 Requires at least: 4.6
-Tested up to: 6.4.2
+Tested up to: 6.4.3
 Version: 1.0.1
 Stable tag: 1.0.1
 Requires PHP: 7.4.33
 License: GPLv3 or later license and included
 URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Now there is finally a reliable way to automatically assign recipients' email to any number of products or product categories so that when the order completes, the order is directly submitted to that specified email recipient according to your predefined settings.
+This plugin's added email recipients feature supersedes the limitation of WooCommerce's single email and address entered in the store setup. This function is desirable for WooCommerce installations that need to submit new orders directly to different sponsors, manufacturers, dropship affiliates, warehouse contacts, and an endless number of other endpoints, with the option to include the address for shipping accuracy.
 
 == Description ==
 
-This automated delegation feature is desirable for WooCommerce systems that need to communicate with multiple sponsors, manufacturers, dropship affiliates, warehouse contacts, and an endless number of other endpoints. Previously, you could add several emails to a new order from the WooCommerce Settings > Email tab, but all the products would only be delivered to the assigned recipients. You had no way to selectively choose where different product orders were delivered without developer customizations or expensive commercial plugins.
+<strong>Multi-Emails for WooCommerce</strong> provides unique control over the "ship from" email and address assigned to a category of products or a single product or combination thereof added to WooCommerce. Instead of being limited to one email and address assigned within the Woocommerce store setup, now you can apply any number of emails along with the option of a unique "ship from" point of origin. This allows orders to be submitted to assigned emails apart from the WooCommerce default email and calculates shipping based on the point of origin address entered.
 
-The function of this unique plugin follows the logic of WooCommerce, where it will allow the customer to receive the default notices to the emails entered as follows: Order on hold, Processing order, Completed order, Refunded order, Customer note, Reset password, and New account. The company recipient emails will in turn receive the default admin emails: New order, Cancelled order, and Failed order.
+<strong>IMPORTANT NOTE:</strong> The logic of this plugin dictates that the buyer cannot combine products (WordPress default email address and assigned shipping address) in the same order. If an item is placed in the cart that is selected by the plugin to be shipped from a plugin-defined address, a cart message alerts the buyer that only the items listed in the "X" category(s) can be purchased at the same time, not in combination with other items not related to that unique shipping point. Otherwise, the calculated shipping results will not be accurate. The admin can customize the message for the cart notice in settings.
 
-This plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile as well as make them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each of the email fields with titles like "Email Two" and "Email Three" as examples.
+This order multi-email plugin can be combined with digital asset purchases and non-deliverable items, but these items must be assigned a unique category unrelated to physical products to avoid conflicts.
 
-IMPORTANT NOTE: The logic of this plugin dictates that the a buyer cannot combined products (WordPress default shipping address and unique addresses) combined in the same order. If an item is placed in the cart that is selected by the plugin to be shipped from a plugin defined address, a message alerts the buyer that only the items listed in the "X" category(s) can be purchased at the same time, not in combination with other items not related to that unique shipping point. Otherwise, the calculated shipping results will not be accurate.
-
-Added as an expanded feature during the plugin's creation, is the ability to install the address along with the email selected as the order's point of origin. This feature overrides the entered default sales origin address in WooCommerce, which allows the shipping to calculate based on the email's physical address, resulting in a much more accurate sales total.
+As a bonus, this plugin also allows an administrator to optionally choose to modify the registered user's contact profile by entering multiple email fields under their user profile and making them accessible from the shopping cart. This way a customer may choose to be contacted about an order from different entered emails for their convenience. The admin must create labels for each email field with titles like "Email Two" and "Email Three" as examples for adding two additional email fields.
 
 The plugin's language support includes English, Spanish, French, and Russian.
 
@@ -77,11 +75,12 @@ None to report as of the release version
 
 == Changelog ==
 
-1.0.1 01/22/24
+1.0.1 02/12/24
 - Fix the user response banner timer
 - Isolate an order to a category if plugin address used
-- Assure compliance with WordPress 6.4.1
-- Assure compliance with WooCommerce 8.3.1
+- Fix message injection of conflicting cart items
+- Assure compliance with WordPress 6.4.3
+- Assure compliance with WooCommerce 8.5.2
 
 1.0.0 01/08/24
 - Initial release

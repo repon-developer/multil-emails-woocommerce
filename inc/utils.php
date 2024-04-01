@@ -110,8 +110,11 @@ class Utils {
 	 * @return array
 	 */
 	public static function get_additional_email_fields() {
-		$customer_emails = self::get_settings()['customer_emails'];
-		if (!is_array($customer_emails) || empty($customer_emails)) {
+		$settings = self::get_settings();
+
+		$customer_emails_lang_key = Utils::get_language_key('customer_emails');
+		$customer_emails = isset($settings[$customer_emails_lang_key]) ? $settings[$customer_emails_lang_key] : array();
+		if (!is_array($customer_emails)) {
 			$customer_emails = [];
 		}
 
@@ -216,5 +219,20 @@ class Utils {
 		}
 
 		return $company;
+	}
+
+	/**
+	 * Get key for WPML language
+	 * 
+	 * @since 1.0.2
+	 * @return string
+	 */
+	public static function get_language_key($key) {
+		if (!defined('ICL_SITEPRESS_VERSION')) {
+			return $key;
+		}
+
+		$key = sanitize_key($key);
+		return $key . '_' . apply_filters('wpml_current_language', NULL);
 	}
 }

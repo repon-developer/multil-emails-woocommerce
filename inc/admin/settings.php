@@ -19,7 +19,9 @@ $email_recipients = array_map(function ($recipient_item) {
 	return Utils::sanitize_recipient($recipient_item);
 }, $email_recipients);
 
-$customer_emails = $settings['customer_emails'];
+
+$customer_emails_lang_key = Utils::get_language_key('customer_emails');
+$customer_emails = isset($settings[$customer_emails_lang_key]) ? $settings[$customer_emails_lang_key] : array();
 if (!is_array($customer_emails)) {
 	$customer_emails = [];
 }
@@ -269,7 +271,10 @@ $kses_allow_options = array(
 							</label>
 
 							<div id="order-conflict-notice-text-field">
-								<?php wp_editor($settings['order_conflict_notice_text'], 'order_conflict_notice_text', array(
+								<?php
+								$order_conflict_notice_text_lang_key = Utils::get_language_key('order_conflict_notice_text');
+								$wp_editor_content = isset($settings[$order_conflict_notice_text_lang_key]) ? $settings[$order_conflict_notice_text_lang_key] : '';
+								wp_editor($wp_editor_content, 'order_conflict_notice_text', array(
 									'textarea_rows' => 4
 								)); ?>
 							</div>
